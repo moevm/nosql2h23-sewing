@@ -25,7 +25,7 @@ print(get_users())
 print("---------------------")
 create_user(
     email="Philipez@yandex.ru",
-    password_hash="fasfafas"
+    password_hash="fasfasf"
 )
 
 print(get_users())
