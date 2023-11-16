@@ -89,30 +89,18 @@ export default {
   data() {
     return {
 
-      selected: 'women',
+      selected: 'TestFacon1',
       options: [
         {text: 'Женщина', value: 'women'},
         {text: 'Мужчина', value: 'man'},
-        {text: 'Тест от специалиста', value: 'test_facon'},
-        {text: 'Астронавт', value: 'astronaut_pose'},
-        {text: 'Test', value: 'test'},
-        {text: 'Jac_W_P', value: 'Jac_W_P'},
-        {text: 'Jac_W_P', value: 'Jac_WO_P'},
-        {text: 'cubejacket', value: 'cubejacket'},
-        {text: 'Untitled', value: 'Untitled'},
-        {text: 'Edit', value: 'Edit'},
-        {text: 'Dino1', value: 't-rex'},
-        {text: 'Dino2', value: 'young_trex'},
-        {text: 'test12', value: 'test12'},
+        {text: 'TestFacon1', value: 'TestFacon1'},
+        {text: 'TestFacon2', value: 'TestFacon2'},
       ]
     }
   },
   methods: {
     init: function () {
       this.color = reactive({
-        hue: 50,
-        saturation: 100,
-        luminosity: 50,
         alpha: 1,
       });
 
@@ -131,15 +119,15 @@ export default {
       let container = document.getElementById('viewer');
 
       this.camera = new Three.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 100);
-      this.camera.position.x = -0.7;
-      this.camera.position.y = 0;
-      this.camera.position.z = 1;
-      this.camera.lookAt(-2, -0.2, -1)
+      this.camera.position.x = 1.5;
+      this.camera.position.y = 1.5;
+      this.camera.position.z = 4;
+      this.camera.lookAt(1.5, 1.5, -1)
 
       const color = 0xFFFFFF;
       const intensity = 2.5;
 
-      const light = new Three.AmbientLight(color, 1);
+      const light = new Three.AmbientLight(color, 0.5);
       this.scene.add(light);
 
 
@@ -165,13 +153,15 @@ export default {
       const loader = new Three.TextureLoader(loadManager);
       const lensiz_texture = loader.load("lensiz_logo.jpg");
 
-      const logoGeo = new Three.PlaneGeometry(5.5, 2.6);
+      let width = 11;
+
+      const logoGeo = new Three.PlaneGeometry(width, width / 2.4);
       const logoMat = new Three.MeshPhongMaterial({map: lensiz_texture});
 
       const logo = new Three.Mesh(logoGeo, logoMat);
       logo.receiveShadow = true;
-      logo.position.x = -3.9;
-      logo.position.y = 0.4;
+      logo.position.x = 1.1;
+      logo.position.y = 2.1;
       logo.position.z = -1.99;
       this.scene.add(logo);
 
@@ -227,7 +217,6 @@ export default {
       console.log(this.models)
 
       this.loader.load(`models/${model}.glb`, (gltf) => {
-        gltf.scene.position.x = -1.9;
         gltf.scene.position.y = -1;
         gltf.scene.position.z = -0.8;
         gltf.scene.traverse(function (model) {
