@@ -59,12 +59,18 @@
          @mousewheel='mouseWheel' oncontextmenu="return false;"
          @mousedown.right="mouseDownRight" @mouseup.right="mouseUpRight">
     </div>
-    <div id="select" class="select">
-      <select v-model="selected" @change="load_model($event)" class="form-select">
-        <option v-for="option in options" :value="option.value" :key="option.value">
-          {{ option.text }}
-        </option>
-      </select>
+    <div id="select">
+      <div>
+        <select v-model="selected" @change="load_model($event)" class="select form-select" style="display: inline-block; width: 75%">
+          <option v-for="option in options" :value="option.value" :key="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        <div style="width: 20%; display: inline-block; padding-left: 5%">
+          <color-picker @pureColorChange="change_color($event)" :disableAlpha="true"/>
+        </div>
+      </div>
+
       <hr>
       <button class="btn btn-primary small"
               style="width: 70%; margin-left: 15%; color: #f3dfdf; background-color: #0353b2;">
@@ -82,13 +88,17 @@
 import * as Three from 'three';
 import {reactive} from 'vue';
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
+import { ColorPicker } from "vue3-colorpicker";
+import "vue3-colorpicker/style.css";
 
 export default {
   name: 'App',
+  components: { ColorPicker },
 
   data() {
+    let gradientColor;
     return {
-
+      gradientColor,
       selected: 'TestFacon1',
       options: [
         {text: 'Женщина', value: 'women'},
@@ -119,10 +129,9 @@ export default {
       let container = document.getElementById('viewer');
 
       this.camera = new Three.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 100);
-      this.camera.position.x = 1.5;
       this.camera.position.y = 1.5;
       this.camera.position.z = 4;
-      this.camera.lookAt(1.5, 1.5, -1)
+      this.camera.lookAt(0, 1.5, -1)
 
       const color = 0xFFFFFF;
       const intensity = 2.5;
@@ -160,11 +169,10 @@ export default {
 
       const logo = new Three.Mesh(logoGeo, logoMat);
       logo.receiveShadow = true;
-      logo.position.x = 1.1;
+      logo.position.x = 0;
       logo.position.y = 2.1;
       logo.position.z = -1.99;
       this.scene.add(logo);
-
 
       const planeGeo = new Three.PlaneGeometry(40, 40);
       const planeMat = new Three.MeshPhongMaterial({color: 0xFFFFFF});
@@ -192,19 +200,6 @@ export default {
       this.renderer.render(this.scene, this.camera);
     },
 
-    // onInput(hue) {
-    //   for (let i = 0; i < this.models.length; i++) {
-    //     this.models[i].traverse(function (model) {
-    //       if (model.isMesh) {
-    //         model.castShadow = true;
-    //         if (model.material.name === "avaturn_shoes_0_material") {
-    //           model.material.color = new Three.Color(parseInt(hslToHex(hue, 100, 50), 16));
-    //         }
-    //       }
-    //     })
-    //   }
-    // },
-
     load_model: function (model) {
       if (typeof (model) != "string") {
         model = model.target.value;
@@ -230,6 +225,20 @@ export default {
       }, undefined, function (error) {
         console.error(error);
       });
+    },
+
+    change_color(value) {
+      console.log(value)
+      for (let i = 0; i < this.models.length; i++) {
+            this.models[i].traverse(function (model) {
+              if (model.isMesh) {
+                model.castShadow = true;
+                if (model.material.name === "Pants2_Main") {
+                  model.material.color = new Three.Color(value);
+                }
+              }
+            })
+          }
     },
 
     mouseDownLeft() {
