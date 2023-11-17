@@ -61,13 +61,14 @@
     </div>
     <div id="select">
       <div>
-        <select v-model="selected" @change="load_model($event)" class="select form-select" style="display: inline-block; width: 75%">
+        <select v-model="selected" @change="load_model($event)" class="select form-select"
+                style="display: inline-block; width: 75%">
           <option v-for="option in options" :value="option.value" :key="option.value">
             {{ option.text }}
           </option>
         </select>
         <div style="width: 20%; display: inline-block; padding-left: 5%">
-          <color-picker @pureColorChange="change_color($event)" :disableAlpha="true"/>
+          <color-picker v-model:pureColor=white_color @pureColorChange="change_color($event)" :disableAlpha="true"/>
         </div>
       </div>
 
@@ -88,23 +89,21 @@
 import * as Three from 'three';
 import {reactive} from 'vue';
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
-import { ColorPicker } from "vue3-colorpicker";
+import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 
 export default {
   name: 'App',
-  components: { ColorPicker },
+  components: {ColorPicker},
 
   data() {
     let gradientColor;
     return {
       gradientColor,
-      selected: 'TestFacon1',
+      white_color: { r: 215, g: 215, b: 215 },
+      selected: 'Human/Man',
       options: [
-        {text: 'Женщина', value: 'women'},
-        {text: 'Мужчина', value: 'man'},
-        {text: 'TestFacon1', value: 'TestFacon1'},
-        {text: 'TestFacon2', value: 'TestFacon2'},
+        {text: 'Мужчина', value: 'Human/Man'},
       ]
     }
   },
@@ -129,9 +128,9 @@ export default {
       let container = document.getElementById('viewer');
 
       this.camera = new Three.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 100);
-      this.camera.position.y = 1.5;
-      this.camera.position.z = 4;
-      this.camera.lookAt(0, 1.5, -1)
+      this.camera.position.y = 1.0;
+      this.camera.position.z = 2.5;
+      this.camera.lookAt(0, 0.7, -1)
 
       const color = 0xFFFFFF;
       const intensity = 2.5;
@@ -162,7 +161,7 @@ export default {
       const loader = new Three.TextureLoader(loadManager);
       const lensiz_texture = loader.load("lensiz_logo.jpg");
 
-      let width = 11;
+      let width = 8;
 
       const logoGeo = new Three.PlaneGeometry(width, width / 2.4);
       const logoMat = new Three.MeshPhongMaterial({map: lensiz_texture});
@@ -170,7 +169,7 @@ export default {
       const logo = new Three.Mesh(logoGeo, logoMat);
       logo.receiveShadow = true;
       logo.position.x = 0;
-      logo.position.y = 2.1;
+      logo.position.y = 1.1;
       logo.position.z = -1.99;
       this.scene.add(logo);
 
@@ -204,20 +203,18 @@ export default {
       if (typeof (model) != "string") {
         model = model.target.value;
       }
-      console.log(this.models)
       for (let i = 0; i < this.models.length; i++) {
         this.scene.remove(this.models[i]);
         this.models.splice(i, 1);
       }
-      console.log(this.models)
 
       this.loader.load(`models/${model}.glb`, (gltf) => {
         gltf.scene.position.y = -1;
         gltf.scene.position.z = -0.8;
         gltf.scene.traverse(function (model) {
+          console.log(model)
           if (model.isMesh) {
             model.castShadow = true;
-            console.log(model.material)
           }
         });
         this.models.push(gltf.scene);
@@ -228,17 +225,18 @@ export default {
     },
 
     change_color(value) {
-      console.log(value)
       for (let i = 0; i < this.models.length; i++) {
-            this.models[i].traverse(function (model) {
-              if (model.isMesh) {
-                model.castShadow = true;
-                if (model.material.name === "Pants2_Main") {
-                  model.material.color = new Three.Color(value);
-                }
-              }
-            })
+        this.models[i].traverse(function (model) {
+          if (model.isMesh) {
+            model.castShadow = true;
+            console.log(model.material.name)
+            if (model.material.name === "Pants_Main.001") {
+              console.log(model)
+              model.material.color = new Three.Color(value);
+            }
           }
+        })
+      }
     },
 
     mouseDownLeft() {
@@ -277,6 +275,8 @@ export default {
     this.init();
     this.animate();
     this.load_model(this.selected);
+    this.load_model("Jacket/Jac_Main");
+    this.load_model("Pants/Pants_Main");
   }
 }
 </script>
@@ -286,6 +286,7 @@ export default {
   font-family: Verdana;
   src: url('~@/assets/fonts/Verdana.ttf');
 }
+
 @font-face {
   font-family: Ubuntu;
   src: url('~@/assets/fonts/Ubuntu.ttf');
