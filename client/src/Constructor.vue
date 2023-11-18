@@ -60,7 +60,7 @@
          @mousedown.right="mouseDownRight" @mouseup.right="mouseUpRight">
     </div>
     <div id="select">
-      <div style="padding-bottom: 10px">
+      <div style="padding-bottom: 10px; text-align: center">
         <select v-model="selected" @change="load_model($event)" class="select form-select"
                 style="display: inline-block; width: 75%">
           <option v-for="option in options" :value="option.value" :key="option.value">
@@ -69,15 +69,25 @@
         </select>
       </div>
 
+      <hr>
+
       <ul class="row-container" style="margin-left: 0; padding-left: 0">
-        <li v-for="index in Object.keys(elements)" v-bind:key="index" style="list-style-type: none;">
-          <color-picker style="width: 10%" v-model:pureColor="white_color" @pureColorChange="change_color($event)" :disableAlpha="true" class="inline-element" />
-          <n-tree-select style="width: 80%" :options="tree_options" @update:value="value => handleUpdateValue(value, index)" check-strategy="child" class="inline-element" />
-          <CCloseButton style="width: 10%" @click="deleteRow(index)" class="inline-element" />
+        <li v-for="index in Object.keys(elements)" v-bind:key="index"
+            style="list-style-type: none; padding-bottom: 10px">
+          <color-picker style="width: 10%" v-model:pureColor="elements_color[index]" @pureColorChange="change_color($event, index)"
+                        :disableAlpha="true" class="inline-element"/>
+          <n-tree-select style="width: 70%" :options="tree_options"
+                         @update:value="value => handleUpdateValue(value, index)" check-strategy="child"
+                         class="inline-element"/>
+          <CCloseButton style="width: 10%" @click="deleteRow(index)" class="inline-element"/>
         </li>
       </ul>
 
-      <button @click="addRow">Добавить элемент</button>
+      <button @click="addRow" class="btn btn-primary small" id="add_button">
+        <svg width="33px" height="33px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
 
       <hr>
       <button class="btn btn-primary small"
@@ -109,7 +119,7 @@ export default defineComponent({
       last_element_id: 0,
       elements: {},
       elements_to_models: {},
-      white_color: {r: 215, g: 215, b: 215},
+      elements_color: {},
       selected: 'Human/Man',
       options: [
         {text: 'Мужчина', value: 'Human/Man'},
@@ -230,13 +240,18 @@ export default defineComponent({
     },
 
     handleUpdateValue(value, option) {
+      this.scene.remove(this.models[this.elements_to_models[option]]);
+      delete this.elements[option];
       this.elements[option] = value;
-      this.load_model(value);
+
+      let color = this.elements_color[option]
+      this.load_model(value, color);
       this.elements_to_models[option] = this.models.length;
     },
 
     addRow() {
       this.elements[this.last_element_id] = -1;
+      this.elements_color[this.last_element_id] = {r: 215, g: 215, b: 215};
       this.last_element_id += 1;
     },
     deleteRow(index) {
@@ -249,7 +264,7 @@ export default defineComponent({
       this.renderer.render(this.scene, this.camera);
     },
 
-    load_model: function (model) {
+    load_model: function (model, color) {
       if (typeof (model) != "string") {
         model = model.target.value;
       }
@@ -261,6 +276,7 @@ export default defineComponent({
         gltf.scene.traverse(function (model) {
           if (model.isMesh) {
             model.castShadow = true;
+            model.material.color = new Three.Color(color);
           }
         });
         this.models.push(gltf.scene);
@@ -270,17 +286,12 @@ export default defineComponent({
       });
     },
 
-    change_color(value) {
-      for (let i = 0; i < this.models.length; i++) {
-        this.models[i].traverse(function (model) {
-          if (model.isMesh) {
-            model.castShadow = true;
-            if (model.material.name === "Pants_Main.001") {
-              model.material.color = new Three.Color(value);
-            }
-          }
-        })
-      }
+    change_color(value, index) {
+      this.models[this.elements_to_models[index]].traverse(function (model) {
+        if (model.isMesh) {
+          model.material.color = new Three.Color(value);
+        }
+      })
     },
 
     mouseDownLeft() {
@@ -390,7 +401,6 @@ export default defineComponent({
   margin-left: 5vw;
   width: 90vw;
   height: 70vh;
-  /*white-space: nowrap;*/
 }
 
 
@@ -403,6 +413,19 @@ export default defineComponent({
   width: 100%;
   font-size: 19px;
   color: #fafaff;
+}
+
+#add_button {
+  width: 35px;
+  height: 35px;
+  margin-left: 42%;
+  padding: 0;
+  text-align: center;
+  background-color: #1ea83a
+}
+
+#add_button:hover {
+  background-color: #96ff40;
 }
 
 header {
@@ -422,7 +445,7 @@ header {
 
 
 .row-container {
-  white-space: nowrap; /* Prevents wrapping to the next line */
+  white-space: nowrap;
 }
 
 .inline-element {
