@@ -74,7 +74,8 @@
       <ul class="row-container" style="margin-left: 0; padding-left: 0">
         <li v-for="index in Object.keys(elements)" v-bind:key="index"
             style="list-style-type: none; padding-bottom: 10px">
-          <color-picker style="width: 10%" v-model:pureColor="elements_color[index]" @pureColorChange="change_color($event, index)"
+          <color-picker style="width: 10%" v-model:pureColor="elements_color[index]"
+                        @pureColorChange="change_color($event, index)"
                         :disableAlpha="true" class="inline-element"/>
           <n-tree-select style="width: 70%" :options="tree_options"
                          @update:value="value => handleUpdateValue(value, index)" check-strategy="child"
@@ -134,6 +135,60 @@ export default defineComponent({
                   "Куртка 1",
               key: "Jacket/Jac_Main",
             },
+            {
+              label:
+                  "Карманы",
+              key: "Pockets",
+              children: [
+                {
+                  label:
+                      "Карман левый 1",
+                  key: "Jacket/Jac_Pocket_LEFT_V1",
+                },
+                {
+                  label:
+                      "Карман левый 2",
+                  key: "Jacket/Jac_Pocket_LEFT_V2",
+                },
+                {
+                  label:
+                      "Карман правый 1",
+                  key: "Jacket/Jac_Pocket_RIGHT_V1",
+                },
+                {
+                  label:
+                      "Карман правый 2",
+                  key: "Jacket/Jac_Pocket_RIGHT_V2",
+                },
+              ],
+            },
+            {
+              label:
+                  "Flic",
+              key: "Flics",
+              children: [
+                {
+                  label:
+                      "Jac_Flic_BEHIND_V1",
+                  key: "Jacket/Jac_Flic_BEHIND_V1",
+                },
+                {
+                  label:
+                      "Jac_Flic_BEHIND_V2",
+                  key: "Jacket/Jac_Flic_BEHIND_V2",
+                },
+                {
+                  label:
+                      "Jac_Flic_BOTTOM_BACK",
+                  key: "Jacket/Jac_Flic_BOTTOM_BACK",
+                },
+                {
+                  label:
+                      "Jac_Flic_BOTTOM_FACE",
+                  key: "Jacket/Jac_Flic_BOTTOM_FACE",
+                },
+              ],
+            },
           ],
         },
         {
@@ -144,6 +199,65 @@ export default defineComponent({
               label:
                   "Штаны 1",
               key: "Pants/Pants_Main",
+            },
+            {
+              label:
+                  "Карманы",
+              key: "Pockets",
+              children: [
+                {
+                  label: "Декоративные",
+                  key: "Decorative pockets",
+                  children: [
+                    {
+                      label:
+                          "Левый 1",
+                      key: "Pants/Pants_Decor_Pocket_Left_V1",
+                    },
+                    {
+                      label:
+                          "Левый 2",
+                      key: "Pants/Pants_Decor_Pocket_Left_V2",
+                    },
+                    {
+                      label:
+                          "Правый 1",
+                      key: "Pants/Pants_Decor_Pocket_Right_V1",
+                    },
+                    {
+                      label:
+                          "Правый 2",
+                      key: "Pants/Pants_Decor_Pocket_Right_V2",
+                    },
+                  ],
+                },
+                {
+                  label: "Обычные",
+                  key: "Pockets_Full",
+                  children: [
+                    {
+                      label:
+                          "Левый 1",
+                      key: "Pants/Pants_Pocket_Left_V1",
+                    },
+                    {
+                      label:
+                          "Левый 2",
+                      key: "Pants/Pants_Pocket_Left_V2",
+                    },
+                    {
+                      label:
+                          "Правый 1",
+                      key: "Pants/Pants_Pocket_Right_V1",
+                    },
+                    {
+                      label:
+                          "Правый 2",
+                      key: "Pants/Pants_Pocket_Right_V2",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
