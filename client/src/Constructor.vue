@@ -1,7 +1,7 @@
 <template>
-  <header style="font-family: Ubuntu; padding-top: 5vh">
+  <header style="font-family: Ubuntu;">
     <img src="@/assets/logo.png" id="logo"/>
-    <div style="display: inline;">
+    <div class="header_core">
       <a href="/constructor" class="header_link">Конструктор</a>
       <a href="/projects" class="header_link">Мои проекты</a>
       <a href="/orders" class="header_link">Мои заказы</a>
@@ -28,8 +28,8 @@
     </div>
   </header>
 
-  <hr style="width: 92vw; margin-left: 4vw">
-  <h1 class="display-1" style="text-align: center; font-size: 58px; font-family: Ubuntu; color: #24509c">
+  <hr style="width: 92vw; margin-left: 4vw; margin-top: 0vw">
+  <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu; color: #24509c">
     Конструктор спецодежды</h1>
   <br>
   <div id="wrapper" style="font-family: Ubuntu">
@@ -543,7 +543,12 @@ export default defineComponent({
 }
 
 header {
-  margin-bottom: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.header_core {
+  display: inline;
 }
 
 .header_link {
