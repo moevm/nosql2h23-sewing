@@ -543,12 +543,15 @@ export default defineComponent({
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 2vh;
   margin-bottom: 2vh;
 }
 
 .header_core {
-  display: inline;
+
 }
 
 .header_link {
