@@ -61,12 +61,19 @@
     </div>
     <div id="select">
       <div style="padding-bottom: 10px; text-align: center">
-        <select v-model="selected" @change="load_model($event)" class="select form-select"
+        <select v-model="selected" @change="sex_change($event)" class="select form-select"
                 style="display: inline-block; width: 75%">
           <option v-for="option in options" :value="option.value" :key="option.value">
             {{ option.text }}
           </option>
         </select>
+
+      </div>
+      <div style="padding-bottom: 10px; text-align: center">
+        Начальный цвет:
+        <color-picker style="width: 10%" v-model:pureColor="start_color"
+                      @pureColorChange="change_start_color($event)"
+                      :disableAlpha="true" class="inline-element"/>
       </div>
 
       <hr>
@@ -84,7 +91,7 @@
         </li>
       </ul>
 
-      <button @click="addRow" class="btn btn-primary small" id="add_button">
+      <button @click="addRow" class="btn btn-primary small" id="add_button" style="margin-left: 45%; text-align: center">
         <svg width="33px" height="33px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -117,13 +124,16 @@ export default defineComponent({
 
   data() {
     return {
+      sex: "Man",
       last_element_id: 0,
+      start_color: {r: 215, g: 215, b: 215},
       elements: {},
       elements_to_models: {},
       elements_color: {},
-      selected: 'Human/Man',
+      selected: 'Man/Man/Man',
       options: [
-        {text: 'Мужчина', value: 'Human/Man'},
+        {text: 'Мужчина', value: 'Man/Man/Man'},
+        {text: 'Женщина', value: 'Woman/Human/Woman'},
       ],
       tree_options: [
         {
@@ -131,61 +141,106 @@ export default defineComponent({
           key: "jackets",
           children: [
             {
-              label:
-                  "Куртка 1",
+              label: "Jac_Col",
               key: "Jacket/Jac_Main",
             },
             {
               label:
-                  "Карманы",
-              key: "Pockets",
+                  "Навесы",
+              key: "Lols",
               children: [
+
                 {
-                  label:
-                      "Карман левый 1",
-                  key: "Jacket/Jac_Pocket_LEFT_V1",
+                  label: "Jac_Col",
+                  key: "Jacket/Jac_Col",
                 },
                 {
-                  label:
-                      "Карман левый 2",
-                  key: "Jacket/Jac_Pocket_LEFT_V2",
+                  label: "Jac_Decor_BEHIND",
+                  key: "Jacket/Jac_Decor_BEHIND",
                 },
                 {
-                  label:
-                      "Карман правый 1",
-                  key: "Jacket/Jac_Pocket_RIGHT_V1",
+                  label: "Jac_Decor_Top_V1",
+                  key: "Jacket/Jac_Decor_Top_V1",
                 },
                 {
-                  label:
-                      "Карман правый 2",
-                  key: "Jacket/Jac_Pocket_RIGHT_V2",
+                  label: "Jac_Decor_Top_V2",
+                  key: "Jacket/Jac_Decor_Top_V2",
                 },
-              ],
-            },
-            {
-              label:
-                  "Flic",
-              key: "Flics",
-              children: [
                 {
-                  label:
-                      "Jac_Flic_BEHIND_V1",
+                  label: "Jac_Flic_BEHIND_V1",
                   key: "Jacket/Jac_Flic_BEHIND_V1",
                 },
                 {
-                  label:
-                      "Jac_Flic_BEHIND_V2",
+                  label: "Jac_Flic_BEHIND_V2",
                   key: "Jacket/Jac_Flic_BEHIND_V2",
                 },
                 {
-                  label:
-                      "Jac_Flic_BOTTOM_BACK",
+                  label: "Jac_Flic_BOTTOM_BACK",
                   key: "Jacket/Jac_Flic_BOTTOM_BACK",
                 },
                 {
-                  label:
-                      "Jac_Flic_BOTTOM_FACE",
+                  label: "Jac_Flic_BOTTOM_FACE",
                   key: "Jacket/Jac_Flic_BOTTOM_FACE",
+                },
+                {
+                  label: "Jac_Flic_Full",
+                  key: "Jacket/Jac_Flic_Full",
+                },
+                {
+                  label: "Jac_Flic_HANDS_V2",
+                  key: "Jacket/Jac_Flic_HANDS_V2",
+                },
+                {
+                  label: "Jac_Flic_Lim",
+                  key: "Jacket/Jac_Flic_Lim",
+                },
+                {
+                  label: "Jac_Flic_TOP",
+                  key: "Jacket/Jac_Flic_TOP",
+                },
+                {
+                  label: "Jac_Flic_TOP_V2",
+                  key: "Jacket/Jac_Flic_TOP_V2",
+                },
+                {
+                  label: "Jac_Hands",
+                  key: "Jacket/Jac_Hands",
+                },
+                {
+                  label: "Jac_Main",
+                  key: "Jacket/Jac_Main",
+                },
+                {
+                  label: "Jac_Pocket_Decor_LEFT_V1",
+                  key: "Jacket/Jac_Pocket_Decor_LEFT_V1",
+                },
+                {
+                  label: "Jac_Pocket_Decor_RIGHT_V1",
+                  key: "Jacket/Jac_Pocket_Decor_RIGHT_V1",
+                },
+                {
+                  label: "Jac_Pocket_LEFT_V1",
+                  key: "Jacket/Jac_Pocket_LEFT_V1",
+                },
+                {
+                  label: "Jac_Pocket_LEFT_V2",
+                  key: "Jacket/Jac_Pocket_LEFT_V2",
+                },
+                {
+                  label: "Jac_Pocket_RIGHT_V1",
+                  key: "Jacket/Jac_Pocket_RIGHT_V1",
+                },
+                {
+                  label: "Jac_Pocket_RIGHT_V2",
+                  key: "Jacket/Jac_Pocket_RIGHT_V2",
+                },
+                {
+                  label: "Jac_Rukav_V1",
+                  key: "Jacket/Jac_Rukav_V1",
+                },
+                {
+                  label: "Jac_Rukav_V2",
+                  key: "Jacket/Jac_Rukav_V2",
                 },
               ],
             },
@@ -202,60 +257,68 @@ export default defineComponent({
             },
             {
               label:
-                  "Карманы",
-              key: "Pockets",
+                  "Навесы",
+              key: "Keks",
               children: [
                 {
-                  label: "Декоративные",
-                  key: "Decorative pockets",
-                  children: [
-                    {
-                      label:
-                          "Левый 1",
-                      key: "Pants/Pants_Decor_Pocket_Left_V1",
-                    },
-                    {
-                      label:
-                          "Левый 2",
-                      key: "Pants/Pants_Decor_Pocket_Left_V2",
-                    },
-                    {
-                      label:
-                          "Правый 1",
-                      key: "Pants/Pants_Decor_Pocket_Right_V1",
-                    },
-                    {
-                      label:
-                          "Правый 2",
-                      key: "Pants/Pants_Decor_Pocket_Right_V2",
-                    },
-                  ],
+                  label: "Pants_Decor_Pocket_Left_V1",
+                  key: "Pants/Pants_Decor_Pocket_Left_V1",
                 },
                 {
-                  label: "Обычные",
-                  key: "Pockets_Full",
-                  children: [
-                    {
-                      label:
-                          "Левый 1",
-                      key: "Pants/Pants_Pocket_Left_V1",
-                    },
-                    {
-                      label:
-                          "Левый 2",
-                      key: "Pants/Pants_Pocket_Left_V2",
-                    },
-                    {
-                      label:
-                          "Правый 1",
-                      key: "Pants/Pants_Pocket_Right_V1",
-                    },
-                    {
-                      label:
-                          "Правый 2",
-                      key: "Pants/Pants_Pocket_Right_V2",
-                    },
-                  ],
+                  label: "Pants_Decor_Pocket_Left_V2",
+                  key: "Pants/Pants_Decor_Pocket_Left_V2",
+                },
+                {
+                  label: "Pants_Decor_Pocket_Right_V1",
+                  key: "Pants/Pants_Decor_Pocket_Right_V1",
+                },
+                {
+                  label: "Pants_Decor_Pocket_Right_V2",
+                  key: "Pants/Pants_Decor_Pocket_Right_V2",
+                },
+                {
+                  label: "Pants_Flic_Knee_BACK",
+                  key: "Pants/Pants_Flic_Knee_BACK",
+                },
+                {
+                  label: "Pants_Flic_Knee_FACE",
+                  key: "Pants/Pants_Flic_Knee_FACE",
+                },
+                {
+                  label: "Pants_Flic_UNDER_KNEE",
+                  key: "Pants/Pants_Flic_UNDER_KNEE",
+                },
+                {
+                  label: "Pants_Knee",
+                  key: "Pants/Pants_Knee",
+                },
+                {
+                  label: "Pants_Main",
+                  key: "Pants/Pants_Main",
+                },
+                {
+                  label: "Pants_Pocket_BEHINDE",
+                  key: "Pants/Pants_Pocket_BEHINDE",
+                },
+                {
+                  label: "Pants_Pocket_Left_V1",
+                  key: "Pants/Pants_Pocket_Left_V1",
+                },
+                {
+                  label: "Pants_Pocket_Left_V2",
+                  key: "Pants/Pants_Pocket_Left_V2",
+                },
+                {
+                  label: "Pants_Pocket_Right_V1",
+                  key: "Pants/Pants_Pocket_Right_V1",
+                },
+                {
+                  label: "Pants_Pocket_RIght_V2",
+                  key: "Pants/Pants_Pocket_RIght_V2",
+                },
+                {
+                  label: "Pants_Pocket_TOP",
+                  key: "Pants/Pants_Pocket_TOP",
                 },
               ],
             },
@@ -355,22 +418,21 @@ export default defineComponent({
 
     handleUpdateValue(value, option) {
       this.scene.remove(this.models[this.elements_to_models[option]]);
-      delete this.elements[option];
       this.elements[option] = value;
 
       let color = this.elements_color[option]
-      this.load_model(value, color);
-      this.elements_to_models[option] = this.models.length;
+      this.load_model(value, color, false, option);
     },
 
     addRow() {
       this.elements[this.last_element_id] = -1;
-      this.elements_color[this.last_element_id] = {r: 215, g: 215, b: 215};
+      this.elements_color[this.last_element_id] = this.start_color;
       this.last_element_id += 1;
     },
     deleteRow(index) {
       this.scene.remove(this.models[this.elements_to_models[index]]);
       delete this.elements[index];
+      delete this.elements_color[index];
     },
 
     animate: function () {
@@ -378,22 +440,50 @@ export default defineComponent({
       this.renderer.render(this.scene, this.camera);
     },
 
-    load_model: function (model, color) {
+    sex_change: function (model) {
+      if (typeof (model) != "string") {
+        model = model.target.value;
+      }
+      this.sex = model.split('/')[2]
+      let model_path = model.split('/').slice(1).join('/');
+      this.load_model(model_path, null, true)
+    },
+
+    load_model: function (model, color, sex_change_flag, index) {
       if (typeof (model) != "string") {
         model = model.target.value;
       }
 
-      this.loader.load(`models/${model}.glb`, (gltf) => {
+      this.loader.load(`models/${this.sex}/${model}.glb`, (gltf) => {
         gltf.scene.position.y = -1;
         gltf.scene.position.z = -0.8;
         gltf.scene.rotation.y = this.rotation_angle;
         gltf.scene.traverse(function (model) {
           if (model.isMesh) {
             model.castShadow = true;
-            model.material.color = new Three.Color(color);
+            if (color) {
+              model.material.color = new Three.Color(color);
+            }
           }
         });
-        this.models.push(gltf.scene);
+        if (sex_change_flag) {
+          for (let i = 0; i < this.models.length; i++) {
+            this.scene.remove(this.models[i]);
+          }
+
+          this.models = [];
+          this.models.push(gltf.scene);
+
+          for (let key in this.elements) {
+            console.log(this.elements[key])
+            if (this.elements[key] !== -1) {
+              this.load_model(this.elements[key], this.elements_color[key], false, key)
+            }
+          }
+        } else {
+          this.models.push(gltf.scene);
+        }
+        this.elements_to_models[index] = this.models.length - 1;
         this.scene.add(gltf.scene);
       }, undefined, function (error) {
         console.error(error);
@@ -421,7 +511,9 @@ export default defineComponent({
       this.mouseClickedRight = false;
     },
     mouseWheel(event) {
-      this.camera.position.z = Math.max(this.camera.position.z + event.deltaY / 100, 0.5)
+      this.camera.position.z = this.camera.position.z + event.deltaY / 100
+      this.camera.position.z = Math.max(this.camera.position.z, -0.2)
+      this.camera.position.z = Math.min(this.camera.position.z, 5)
     },
     mouseMove(event) {
       if (this.mouseClickedLeft) {
@@ -432,7 +524,12 @@ export default defineComponent({
       }
       if (this.mouseClickedRight) {
         this.camera.position.y -= (this.lastMPos.y - event.clientY) * 0.001;
+        this.camera.position.y = Math.max(this.camera.position.y, -0.3)
+        this.camera.position.y = Math.min(this.camera.position.y, 2)
+
         this.camera.position.x += (this.lastMPos.x - event.clientX) * 0.002;
+        this.camera.position.x = Math.max(this.camera.position.x, -0.3)
+        this.camera.position.x = Math.min(this.camera.position.x, 0.3)
       }
 
       this.lastMPos = {
@@ -441,10 +538,14 @@ export default defineComponent({
       };
     }
   },
+  change_start_color(value) {
+    this.start_color = value;
+  },
+
   mounted() {
     this.init();
     this.animate();
-    this.load_model(this.selected);
+    this.sex_change(this.selected);
     // this.load_model("Jacket/Jac_Main");
     // this.load_model("Pants/Pants_Main");
   }
