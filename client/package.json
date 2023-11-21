@@ -16,6 +16,8 @@
     "three": "^0.156.1",
     "verte": "^0.0.12",
     "vue": "^3.2.13",
+    "vue-recaptcha": "2.0.3",
+    "vue-router": "^4.2.5",
     "vue3-colorpicker": "^2.2.2"
   },
   "devDependencies": {
