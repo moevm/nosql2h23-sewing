@@ -5,28 +5,7 @@
     Конструктор спецодежды</h1>
   <br>
   <div id="wrapper" style="font-family: Ubuntu">
-    <div id="menu">
-      <ul class="list-group list-group-flush">
-        <li class="menu_button list-group-item" style="border-radius: 10px">
-          <a href="/constructor" class="menu_text">Конструктор</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/projects" class="menu_text">Мои проекты</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/orders" class="menu_text">Мои заказы</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/chat" class="menu_text">Чат с производителем</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/offer" class="menu_text">Оферта</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/instruction_text" class="menu_text">Инструкция (текстовая)</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/instruction_video" class="menu_text">Видео-инструкция</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/edit" class="menu_text">Управление профилем</a></li>
-        <li class="menu_button list-group-item" style="border-radius: 10px">
-          <a href="/faq" class="menu_text">FAQ</a></li>
-      </ul>
-    </div>
+    <MenuComponent />
     <div id="viewer" @mousemove="mouseMove" @mousedown.left="mouseDownLeft" @mouseup.left="mouseUpLeft"
          @mousewheel='mouseWheel' oncontextmenu="return false;"
          @mousedown.right="mouseDownRight" @mouseup.right="mouseUpRight">
@@ -90,10 +69,11 @@ import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
 import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 import HeaderComponent from "@/HeaderComponent";
+import MenuComponent from "@/MenuComponent";
 
 export default defineComponent({
   name: 'App',
-  components: {ColorPicker, CCloseButton, HeaderComponent},
+  components: {ColorPicker, CCloseButton, HeaderComponent, MenuComponent},
 
   data() {
     return {
@@ -536,14 +516,6 @@ export default defineComponent({
   src: url('~@/assets/fonts/Ubuntu.ttf');
 }
 
-#menu {
-  display: table-cell;
-  float: left;
-  width: 20%;
-  border-radius: 10px;
-  padding-right: 5%;
-}
-
 #viewer {
   display: table-cell;
   width: 70vw;
@@ -560,21 +532,6 @@ export default defineComponent({
   padding-left: 5%;
   margin-left: auto;
   margin-right: 0;
-}
-
-.menu_text:hover {
-  text-decoration: underline;
-}
-
-.menu_button {
-  margin-bottom: 0.2vh;
-  border-radius: 10px;
-  background-color: #0353b2;
-}
-
-.menu_text {
-  text-decoration: none;
-  color: #f3dfdf;
 }
 
 #wrapper {

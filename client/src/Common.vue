@@ -130,12 +130,4 @@ header {
   width: 90vw;
   height: 70vh;
 }
-
-#menu {
-  display: table-cell;
-  float: left;
-  width: 20%;
-  border-radius: 10px;
-  padding-right: 5%;
-}
 </style>
