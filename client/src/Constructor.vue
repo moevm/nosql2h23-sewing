@@ -1,34 +1,6 @@
 <template>
-  <header style="font-family: Ubuntu;">
-    <img src="@/assets/logo.png" id="logo"/>
-    <div class="header_core">
-      <a href="/constructor" class="header_link">Конструктор</a>
-      <a href="/projects" class="header_link">Мои проекты</a>
-      <a href="/orders" class="header_link">Мои заказы</a>
-      <a href="/chat" class="header_link">Чат с производителем</a>
-      <a href="/faq" class="header_link">FAQ</a>
-    </div>
-    <div style="display: table; float: right; padding-right: 5vw">
-      <div style="display: table-cell;">
-        <a style="display: table-row">
-          Phone number 1
-        </a>
-        <a style="display: table-row">
-          Phone number 2
-        </a>
-        <a style="display: table-row">
-          info@lensiz.ru
-        </a>
-      </div>
-      <div style="display: table-cell; padding-left: 1vw; text-align: center; vertical-align: middle">
-        <button class="btn btn-danger" style="height: 2.5vw; background-color: #cb292f">
-          Заказать звонок
-        </button>
-      </div>
-    </div>
-  </header>
+  <HeaderComponent />
 
-  <hr style="width: 92vw; margin-left: 4vw; margin-top: 0vw">
   <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu; color: #24509c">
     Конструктор спецодежды</h1>
   <br>
@@ -117,10 +89,11 @@ import {reactive, defineComponent} from 'vue';
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
 import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
+import HeaderComponent from "@/HeaderComponent";
 
 export default defineComponent({
   name: 'App',
-  components: {ColorPicker, CCloseButton},
+  components: {ColorPicker, CCloseButton, HeaderComponent},
 
   data() {
     return {
@@ -604,14 +577,6 @@ export default defineComponent({
   color: #f3dfdf;
 }
 
-#logo {
-  display: inline;
-  vertical-align: middle;
-  margin-right: 5vw;
-  width: 15vw;
-  padding-left: 5vw;
-}
-
 #wrapper {
   margin-left: 5vw;
   width: 90vw;
@@ -642,30 +607,6 @@ export default defineComponent({
 #add_button:hover {
   background-color: #96ff40;
 }
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-}
-
-.header_core {
-
-}
-
-.header_link {
-  font-size: 1vw;
-  padding-left: 2vw;
-  color: black;
-  text-decoration: none;
-}
-
-.header_link:hover {
-  text-decoration: underline;
-}
-
 
 .row-container {
   white-space: nowrap;

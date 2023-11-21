@@ -8,7 +8,7 @@ import Login from './Login.vue'
 import Registration from "@/Registration";
 import Constructor from "./Constructor";
 import LoadModel from "./admin/LoadModel.vue";
-// import TestLogin from './TestLogin'
+import HeaderComponent from "./HeaderComponent.vue"
 
 const router = createRouter({
     routes: [
@@ -27,6 +27,10 @@ const router = createRouter({
         {
             path: '/admin/load_model',
             component: LoadModel
+        },
+        {
+            path: '/header',
+            component: HeaderComponent
         }
     ],
     history: createWebHistory()
