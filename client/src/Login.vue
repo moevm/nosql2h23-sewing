@@ -40,7 +40,7 @@
 import {VueRecaptcha} from 'vue-recaptcha';
 
 export default {
-  name: "Login",
+  name: "LoginPage",
   components: {
     VueRecaptcha
   },

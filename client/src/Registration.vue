@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  name: "Registration"
+  name: "RegistrationPage"
 }
 </script>
 
