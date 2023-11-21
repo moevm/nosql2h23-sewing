@@ -7,12 +7,13 @@ import App from './App.vue'
 import Login from './Login.vue'
 import Registration from "@/Registration";
 import Constructor from "./Constructor";
+import LoadModel from "./admin/LoadModel.vue";
 // import TestLogin from './TestLogin'
 
 const router = createRouter({
     routes: [
         {
-            path: '/',
+            path: '/constructor',
             component: Constructor
         },
         {
@@ -22,6 +23,10 @@ const router = createRouter({
         {
             path: '/registration',
             component: Registration
+        },
+        {
+            path: '/admin/load_model',
+            component: LoadModel
         }
     ],
     history: createWebHistory()
