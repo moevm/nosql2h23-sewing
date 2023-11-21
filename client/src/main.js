@@ -4,10 +4,10 @@ import {createApp} from 'vue'
 import naive from "naive-ui";
 import {createRouter, createWebHistory} from 'vue-router'
 import App from './App.vue'
-// import Login from './Login.vue'
+import Login from './Login.vue'
+import Registration from "@/Registration";
 import Constructor from "./Constructor";
-import TestLogin from './TestLogin'
-// import SyperTestLogin from './SuperTestLogin'
+// import TestLogin from './TestLogin'
 
 const router = createRouter({
     routes: [
@@ -17,7 +17,11 @@ const router = createRouter({
         },
         {
             path: '/login',
-            component: TestLogin
+            component: Login
+        },
+        {
+            path: '/registration',
+            component: Registration
         }
     ],
     history: createWebHistory()

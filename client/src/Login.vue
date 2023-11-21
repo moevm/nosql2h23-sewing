@@ -1,67 +1,79 @@
 <template>
-  <div class="outside-background">
-    <form action="//msiter.ru/action_page.php">
-      <div class="container">
-<!--        <img src="@/assets/logo.png" id="logo"/>-->
+  <section>
+    <div class="content">
+      <div class="card">
+        <form action="//msiter.ru/action_page.php">
+          <div class="container">
+            <img src="@/assets/logo.png" id="logo"/>
+            <div style="font-size: 12px">
+              <div class="form-group">
+                <label for="login"><b>Логин</b></label>
+                <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите логин" name="login"
+                       id="login" required>
+              </div>
 
-        <hr>
-        <div class="form-group">
-          <label for="login"><b>Логин</b></label>
-          <input class="form-control" type="text" placeholder="Введите логин" name="login" id="login" required>
-        </div>
-
-        <div class="form-group">
-          <label for="psw"><b>Пароль</b></label>
-          <input class="form-control" type="password" placeholder="Введите пароль" name="psw" id="psw" required>
-        </div>
-        <hr>
-
-        <button type="submit" class="registerbtn">Войти</button>
+              <div class="form-group">
+                <label for="psw"><b>Пароль</b></label>
+                <input style="font-size: 12px" class="form-control" type="password" placeholder="Введите пароль"
+                       name="psw" id="psw" required>
+              </div>
+            </div>
+            <div>
+              <input type="checkbox" id="remember-me" name="remember" style="scale: 90%"/>
+              <label for="remember-me" style="font-size: 12px; margin-left: 5px; margin-bottom: 5px">Remember Me</label>
+            </div>
+            <button type="submit" class="registerbtn">Войти</button>
+          </div>
+          <VueRecaptcha
+              :sitekey="siteKey"
+              :load-recaptcha-script="true"
+              @verify="handleSuccess"
+              @error="handleError"
+          ></VueRecaptcha>
+        </form>
       </div>
-    </form>
-  </div>
-
+    </div>
+  </section>
 </template>
 
 <script>
+import {VueRecaptcha} from 'vue-recaptcha';
+
 export default {
-  name: "MyLogin"
+  name: "Login",
+  components: {
+    VueRecaptcha
+  },
 }
 </script>
 
 <style scoped>
-.outside-background {
-  width: 100vw;
+section {
+  background-color: #e8e8e8;
   height: 100vh;
-  background-color: black;
-}
-
-.login-form {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  height: 50%;
-  background-color: white;
-
 }
 
+.card {
+  width: 350px;
+}
 
+* {
+  box-sizing: border-box;
+}
 
-/* Добавляем отступы для контейнеров */
 .container {
   padding: 16px;
-  text-align: center;
-  /*background: red;*/
 }
 
-/* Поля ввода на всю ширину */
 input[type=text], input[type=password] {
-  width: 50%;
+  width: 100%;
+  height: 30px;
   padding: 15px;
-  /*margin: 5px 0 22px 0;*/
-  display: block;
-  margin: auto;
+  margin: 5px 0 16px 0;
+  display: inline-block;
   border: none;
   background: #f1f1f1;
 }
@@ -71,21 +83,13 @@ input[type=text]:focus, input[type=password]:focus {
   outline: none;
 }
 
-/* Переопределяем стиль по умолчанию для hr */
-hr {
-  border: none;
-  margin-bottom: 25px;
-}
-
-/* Стиль для кнопки регистрации */
 .registerbtn {
+  height: 30px;
+  width: 100%;
   background-color: #4CAF50;
   color: white;
-  padding: 16px 20px;
-  margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 50%;
   opacity: 0.9;
 }
 
@@ -93,12 +97,12 @@ hr {
   opacity: 1;
 }
 
-/* Добавляем синий цвет для текста ссылок */
 a {
   color: dodgerblue;
 }
 
 #logo {
+  margin-bottom: 20px;
   text-align: center;
 }
 </style>
