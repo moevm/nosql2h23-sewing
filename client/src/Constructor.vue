@@ -84,17 +84,18 @@
           <color-picker style="width: 10%" v-model:pureColor="elements_color[index]"
                         @pureColorChange="change_color($event, index)"
                         :disableAlpha="true" class="inline-element"/>
-          <n-tree-select style="width: 70%" :options="tree_options"
-                         @update:value="value => handleUpdateValue(value, index)" check-strategy="child"
-                         class="inline-element"/>
+          <treeselect style="width: 70%" class="inline-element"
+                      v-model="elements[index]" :close-on-select="false"
+                      :options="tree_options" @input="handleUpdateValue"/>
+<!--          <n-tree-select style="width: 70%" :options="tree_options"-->
+<!--                         @update:value="value => handleUpdateValue(value, index)" check-strategy="child"-->
+<!--                         class="inline-element" :consistent-menu-width="false" @update:show="handleShowEvent"/>-->
           <CCloseButton style="width: 10%" @click="deleteRow(index)" class="inline-element"/>
         </li>
       </ul>
 
-      <button @click="addRow" class="btn btn-primary small" id="add_button" style="margin-left: 45%; text-align: center">
-        <svg width="33px" height="33px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <button @click="addRow" class="btn btn-primary small" id="add_button">
+        Добавить
       </button>
 
       <hr>
@@ -118,9 +119,12 @@ import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
 import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 
+import Treeselect from 'vue3-treeselect'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
+
 export default defineComponent({
   name: 'App',
-  components: {ColorPicker, CCloseButton},
+  components: {ColorPicker, CCloseButton, Treeselect},
 
   data() {
     return {
@@ -137,110 +141,109 @@ export default defineComponent({
       ],
       tree_options: [
         {
+          id: "jackets",
           label: "Куртки",
-          key: "jackets",
           children: [
             {
+              id: "Jacket/Jac_Main",
               label: "Jac_Col",
-              key: "Jacket/Jac_Main",
             },
             {
-              label:
-                  "Навесы",
-              key: "Lols",
+              id: "Lols",
+              label: "Навесы",
               children: [
 
                 {
+                  id: "Jacket/Jac_Col",
                   label: "Jac_Col",
-                  key: "Jacket/Jac_Col",
                 },
                 {
+                  id: "Jacket/Jac_Decor_BEHIND",
                   label: "Jac_Decor_BEHIND",
-                  key: "Jacket/Jac_Decor_BEHIND",
                 },
                 {
+                  id: "Jacket/Jac_Decor_Top_V1",
                   label: "Jac_Decor_Top_V1",
-                  key: "Jacket/Jac_Decor_Top_V1",
                 },
                 {
+                  id: "Jacket/Jac_Decor_Top_V2",
                   label: "Jac_Decor_Top_V2",
-                  key: "Jacket/Jac_Decor_Top_V2",
                 },
                 {
+                  id: "Jacket/Jac_Flic_BEHIND_V1",
                   label: "Jac_Flic_BEHIND_V1",
-                  key: "Jacket/Jac_Flic_BEHIND_V1",
                 },
                 {
+                  id: "Jacket/Jac_Flic_BEHIND_V2",
                   label: "Jac_Flic_BEHIND_V2",
-                  key: "Jacket/Jac_Flic_BEHIND_V2",
                 },
                 {
+                  id: "Jacket/Jac_Flic_BOTTOM_BACK",
                   label: "Jac_Flic_BOTTOM_BACK",
-                  key: "Jacket/Jac_Flic_BOTTOM_BACK",
                 },
                 {
                   label: "Jac_Flic_BOTTOM_FACE",
-                  key: "Jacket/Jac_Flic_BOTTOM_FACE",
+                  id: "Jacket/Jac_Flic_BOTTOM_FACE",
                 },
                 {
                   label: "Jac_Flic_Full",
-                  key: "Jacket/Jac_Flic_Full",
+                  id: "Jacket/Jac_Flic_Full",
                 },
                 {
                   label: "Jac_Flic_HANDS_V2",
-                  key: "Jacket/Jac_Flic_HANDS_V2",
+                  id: "Jacket/Jac_Flic_HANDS_V2",
                 },
                 {
                   label: "Jac_Flic_Lim",
-                  key: "Jacket/Jac_Flic_Lim",
+                  id: "Jacket/Jac_Flic_Lim",
                 },
                 {
                   label: "Jac_Flic_TOP",
-                  key: "Jacket/Jac_Flic_TOP",
+                  id: "Jacket/Jac_Flic_TOP",
                 },
                 {
                   label: "Jac_Flic_TOP_V2",
-                  key: "Jacket/Jac_Flic_TOP_V2",
+                  id: "Jacket/Jac_Flic_TOP_V2",
                 },
                 {
                   label: "Jac_Hands",
-                  key: "Jacket/Jac_Hands",
+                  id: "Jacket/Jac_Hands",
                 },
                 {
                   label: "Jac_Main",
-                  key: "Jacket/Jac_Main",
+                  id: "Jacket/Jac_Main",
                 },
                 {
                   label: "Jac_Pocket_Decor_LEFT_V1",
-                  key: "Jacket/Jac_Pocket_Decor_LEFT_V1",
+                  id: "Jacket/Jac_Pocket_Decor_LEFT_V1",
                 },
                 {
                   label: "Jac_Pocket_Decor_RIGHT_V1",
-                  key: "Jacket/Jac_Pocket_Decor_RIGHT_V1",
+                  id: "Jacket/Jac_Pocket_Decor_RIGHT_V1",
                 },
                 {
                   label: "Jac_Pocket_LEFT_V1",
-                  key: "Jacket/Jac_Pocket_LEFT_V1",
+                  id: "Jacket/Jac_Pocket_LEFT_V1",
                 },
                 {
                   label: "Jac_Pocket_LEFT_V2",
-                  key: "Jacket/Jac_Pocket_LEFT_V2",
+                  id: "Jacket/Jac_Pocket_LEFT_V2",
                 },
                 {
                   label: "Jac_Pocket_RIGHT_V1",
-                  key: "Jacket/Jac_Pocket_RIGHT_V1",
+                  id: "Jacket/Jac_Pocket_RIGHT_V1",
                 },
                 {
                   label: "Jac_Pocket_RIGHT_V2",
-                  key: "Jacket/Jac_Pocket_RIGHT_V2",
+                  id: "Jacket/Jac_Pocket_RIGHT_V2",
                 },
                 {
                   label: "Jac_Rukav_V1",
-                  key: "Jacket/Jac_Rukav_V1",
+                  id: "Jacket/Jac_Rukav_V1",
                 },
                 {
                   label: "Jac_Rukav_V2",
-                  key: "Jacket/Jac_Rukav_V2",
+                  id: "Jacket/Jac_Rukav_V2",
                 },
               ],
             },
@@ -248,77 +251,77 @@ export default defineComponent({
         },
         {
           label: "Штаны",
-          key: "pants",
+          id: "pants",
           children: [
             {
               label:
                   "Штаны 1",
-              key: "Pants/Pants_Main",
+              id: "Pants/Pants_Main",
             },
             {
               label:
                   "Навесы",
-              key: "Keks",
+              id: "Keks",
               children: [
                 {
                   label: "Pants_Decor_Pocket_Left_V1",
-                  key: "Pants/Pants_Decor_Pocket_Left_V1",
+                  id: "Pants/Pants_Decor_Pocket_Left_V1",
                 },
                 {
                   label: "Pants_Decor_Pocket_Left_V2",
-                  key: "Pants/Pants_Decor_Pocket_Left_V2",
+                  id: "Pants/Pants_Decor_Pocket_Left_V2",
                 },
                 {
                   label: "Pants_Decor_Pocket_Right_V1",
-                  key: "Pants/Pants_Decor_Pocket_Right_V1",
+                  id: "Pants/Pants_Decor_Pocket_Right_V1",
                 },
                 {
                   label: "Pants_Decor_Pocket_Right_V2",
-                  key: "Pants/Pants_Decor_Pocket_Right_V2",
+                  id: "Pants/Pants_Decor_Pocket_Right_V2",
                 },
                 {
                   label: "Pants_Flic_Knee_BACK",
-                  key: "Pants/Pants_Flic_Knee_BACK",
+                  id: "Pants/Pants_Flic_Knee_BACK",
                 },
                 {
                   label: "Pants_Flic_Knee_FACE",
-                  key: "Pants/Pants_Flic_Knee_FACE",
+                  id: "Pants/Pants_Flic_Knee_FACE",
                 },
                 {
                   label: "Pants_Flic_UNDER_KNEE",
-                  key: "Pants/Pants_Flic_UNDER_KNEE",
+                  id: "Pants/Pants_Flic_UNDER_KNEE",
                 },
                 {
                   label: "Pants_Knee",
-                  key: "Pants/Pants_Knee",
+                  id: "Pants/Pants_Knee",
                 },
                 {
                   label: "Pants_Main",
-                  key: "Pants/Pants_Main",
+                  id: "Pants/Pants_Main",
                 },
                 {
                   label: "Pants_Pocket_BEHINDE",
-                  key: "Pants/Pants_Pocket_BEHINDE",
+                  id: "Pants/Pants_Pocket_BEHINDE",
                 },
                 {
                   label: "Pants_Pocket_Left_V1",
-                  key: "Pants/Pants_Pocket_Left_V1",
+                  id: "Pants/Pants_Pocket_Left_V1",
                 },
                 {
                   label: "Pants_Pocket_Left_V2",
-                  key: "Pants/Pants_Pocket_Left_V2",
+                  id: "Pants/Pants_Pocket_Left_V2",
                 },
                 {
                   label: "Pants_Pocket_Right_V1",
-                  key: "Pants/Pants_Pocket_Right_V1",
+                  id: "Pants/Pants_Pocket_Right_V1",
                 },
                 {
                   label: "Pants_Pocket_RIght_V2",
-                  key: "Pants/Pants_Pocket_RIght_V2",
+                  id: "Pants/Pants_Pocket_RIght_V2",
                 },
                 {
                   label: "Pants_Pocket_TOP",
-                  key: "Pants/Pants_Pocket_TOP",
+                  id: "Pants/Pants_Pocket_TOP",
                 },
               ],
             },
@@ -416,12 +419,18 @@ export default defineComponent({
       container.appendChild(this.renderer.domElement);
     },
 
-    handleUpdateValue(value, option) {
-      this.scene.remove(this.models[this.elements_to_models[option]]);
-      this.elements[option] = value;
+    handleShowEvent(value) {
+      console.log(value)
+    },
 
-      let color = this.elements_color[option]
-      this.load_model(value, color, false, option);
+    handleUpdateValue() {
+      console.log(1)
+      // value = value[value.length - 1];
+      // this.scene.remove(this.models[this.elements_to_models[option]]);
+      // this.elements[option] = value;
+      //
+      // let color = this.elements_color[option]
+      // this.load_model(value, color, false, option);
     },
 
     addRow() {
@@ -542,6 +551,15 @@ export default defineComponent({
     this.start_color = value;
   },
 
+  watch: {
+    elements: {
+      handler(val, oldVal) {
+        console.log(val, oldVal)
+      },
+      deep: true,
+    }
+  },
+
   mounted() {
     this.init();
     this.animate();
@@ -631,12 +649,10 @@ export default defineComponent({
 }
 
 #add_button {
-  width: 35px;
-  height: 35px;
-  margin-left: 42%;
-  padding: 0;
   text-align: center;
-  background-color: #1ea83a
+  background-color: #1ea83a;
+  width: 70%;
+  margin-left: 15%;
 }
 
 #add_button:hover {

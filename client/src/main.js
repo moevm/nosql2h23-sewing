@@ -8,12 +8,11 @@ import Login from './Login.vue'
 import Registration from "@/Registration";
 import Constructor from "./Constructor";
 import LoadModel from "./admin/LoadModel.vue";
-// import TestLogin from './TestLogin'
 
 const router = createRouter({
     routes: [
         {
-            path: '/constructor',
+            path: '/',
             component: Constructor
         },
         {
