@@ -32,13 +32,16 @@ class DatabaseService:
             "description": description
         })
 
-    async def register_company(self, email: EmailStr, login: str, password: str):
+    async def register_company(self, email: EmailStr, password: str, TIN: str, name: str, contact_person: str, phone: str):
         hashed_password = bcrypt.hashpw(password=password.encode("utf-8"), salt=bcrypt.gensalt())
         self.companies_collection.insert_one({
             "_id": self.companies_collection.count_documents({}),
             "email": email,
-            "login": login,
             "hashed_password": hashed_password,
+            "TIN": TIN,
+            "name": name,
+            "contact_person": contact_person,
+            "phone": phone,
         })
 
         return self.companies_collection.find_one({"email": email}, {"_id": False})

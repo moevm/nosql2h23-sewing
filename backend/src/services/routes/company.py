@@ -26,8 +26,11 @@ async def register(request: Request, data: RestCompanyRegister):
 
     user = await database.register_company(
         email=data.email,
-        login=data.login,
         password=data.password,
+        TIN=data.TIN,
+        name=data.name,
+        contact_person=data.contact_person,
+        phone=data.phone,
     )
 
     auth = Auth()

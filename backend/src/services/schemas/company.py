@@ -3,8 +3,11 @@ from pydantic import BaseModel, EmailStr, Field, constr
 
 class RestCompanyRegister(BaseModel):
     email: EmailStr = Field(description="New user email")
-    login: constr(min_length=1, max_length=64) = Field(description="New user login")
     password: constr(min_length=1, max_length=256) = Field(description="New user password")
+    TIN: constr(min_length=1, max_length=256) = Field(description="New user password")
+    name: constr(min_length=1, max_length=256) = Field(description="New user password")
+    contact_person: constr(min_length=1, max_length=256) = Field(description="New user password")
+    phone: constr(min_length=1, max_length=256) = Field(description="New user password")
 
 
 class RestCompanyLogin(BaseModel):
