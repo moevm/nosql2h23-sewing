@@ -72,7 +72,13 @@
       <div style="padding-bottom: 10px; text-align: center">
         Начальный цвет:
         <color-picker style="width: 10%" v-model:pureColor="start_color"
-                      @pureColorChange="change_start_color($event)"
+                      :disableAlpha="true" class="inline-element"/>
+      </div>
+
+      <div style="padding-bottom: 10px; text-align: center">
+        Цвет ниток:
+        <color-picker style="width: 10%" v-model:pureColor="ropes_color"
+                      @pureColorChange="changeRopesColor($event)"
                       :disableAlpha="true" class="inline-element"/>
       </div>
 
@@ -84,12 +90,9 @@
           <color-picker style="width: 10%" v-model:pureColor="elements_color[index]"
                         @pureColorChange="change_color($event, index)"
                         :disableAlpha="true" class="inline-element"/>
-          <treeselect style="width: 70%" class="inline-element"
-                      v-model="elements[index]" :close-on-select="false"
-                      :options="tree_options" @input="handleUpdateValue"/>
-<!--          <n-tree-select style="width: 70%" :options="tree_options"-->
-<!--                         @update:value="value => handleUpdateValue(value, index)" check-strategy="child"-->
-<!--                         class="inline-element" :consistent-menu-width="false" @update:show="handleShowEvent"/>-->
+          <treeselect style="width: 80%" class="inline-element"
+                      v-model="elements[index]" :close-on-select="false" :clearable="false"
+                      :options="tree_options" placeholder="Выберите элемент..." :disable-branch-nodes="true"/>
           <CCloseButton style="width: 10%" @click="deleteRow(index)" class="inline-element"/>
         </li>
       </ul>
@@ -130,8 +133,10 @@ export default defineComponent({
     return {
       sex: "Man",
       last_element_id: 0,
-      start_color: {r: 215, g: 215, b: 215},
+      start_color: "rgb(215, 215, 215)",
+      ropes_color: "rgb(0, 0, 0)",
       elements: {},
+      active_elements: {},
       elements_to_models: {},
       elements_color: {},
       selected: 'Man/Man/Man',
@@ -140,6 +145,11 @@ export default defineComponent({
         {text: 'Женщина', value: 'Woman/Human/Woman'},
       ],
       tree_options: [
+        {
+          id: -1,
+          label: "Выберите элемент...",
+          isDisabled: true
+        },
         {
           id: "jackets",
           label: "Куртки",
@@ -152,98 +162,109 @@ export default defineComponent({
               id: "Lols",
               label: "Навесы",
               children: [
-
                 {
                   id: "Jacket/Jac_Col",
                   label: "Jac_Col",
                 },
                 {
-                  id: "Jacket/Jac_Decor_BEHIND",
-                  label: "Jac_Decor_BEHIND",
+                  id: "Jacket/Jac_COP_BEHIND_V1",
+                  label: "Jac_COP_BEHIND_V1",
                 },
                 {
-                  id: "Jacket/Jac_Decor_Top_V1",
-                  label: "Jac_Decor_Top_V1",
+                  id: "Jacket/Jac_COP_BEHIND_V2",
+                  label: "Jac_COP_BEHIND_V2",
                 },
                 {
-                  id: "Jacket/Jac_Decor_Top_V2",
-                  label: "Jac_Decor_Top_V2",
+                  id: "Jacket/Jac_COP_FACE",
+                  label: "Jac_COP_FACE",
                 },
                 {
-                  id: "Jacket/Jac_Flic_BEHIND_V1",
-                  label: "Jac_Flic_BEHIND_V1",
+                  id: "Jacket/Jac_COP_Hands",
+                  label: "Jac_COP_Hands",
                 },
                 {
-                  id: "Jacket/Jac_Flic_BEHIND_V2",
-                  label: "Jac_Flic_BEHIND_V2",
+                  id: "Jacket/Jac_COP_Hands_FULL",
+                  label: "Jac_COP_Hands_FULL",
                 },
                 {
-                  id: "Jacket/Jac_Flic_BOTTOM_BACK",
-                  label: "Jac_Flic_BOTTOM_BACK",
+                  id: "Jacket/Jac_COP_Hands_LIM",
+                  label: "Jac_COP_Hands_LIM",
                 },
                 {
-                  label: "Jac_Flic_BOTTOM_FACE",
-                  id: "Jacket/Jac_Flic_BOTTOM_FACE",
+                  id: "Jacket/Jac_COP_TOP",
+                  label: "Jac_COP_TOP",
                 },
                 {
-                  label: "Jac_Flic_Full",
-                  id: "Jacket/Jac_Flic_Full",
+                  id: "Jacket/Jac_COP_UNDERJac_Back",
+                  label: "Jac_COP_UNDERJac_Back",
                 },
                 {
-                  label: "Jac_Flic_HANDS_V2",
-                  id: "Jacket/Jac_Flic_HANDS_V2",
+                  id: "Jacket/Jac_COP_UNDERJac_Face",
+                  label: "Jac_COP_UNDERJac_Face",
                 },
                 {
-                  label: "Jac_Flic_Lim",
-                  id: "Jacket/Jac_Flic_Lim",
+                  id: "Jacket/Jac_Decor_Back",
+                  label: "Jac_Decor_Back",
                 },
                 {
-                  label: "Jac_Flic_TOP",
-                  id: "Jacket/Jac_Flic_TOP",
+                  id: "Jacket/Jac_Decor_Pocket_LEFT_V2",
+                  label: "Jac_Decor_Pocket_LEFT_V2",
                 },
                 {
-                  label: "Jac_Flic_TOP_V2",
-                  id: "Jacket/Jac_Flic_TOP_V2",
+                  id: "Jacket/Jac_Decor_Pocket_RIGHT_V2",
+                  label: "Jac_Decor_Pocket_RIGHT_V2",
                 },
                 {
-                  label: "Jac_Hands",
+                  id: "Jacket/Jac_Decor_TOP",
+                  label: "Jac_Decor_TOP",
+                },
+                {
+                  id: "Jacket/Jac_Decor_TOP_FACE",
+                  label: "Jac_Decor_TOP_FACE",
+                },
+                {
                   id: "Jacket/Jac_Hands",
+                  label: "Jac_Hands",
                 },
                 {
-                  label: "Jac_Main",
                   id: "Jacket/Jac_Main",
+                  label: "Jac_Main",
                 },
                 {
-                  label: "Jac_Pocket_Decor_LEFT_V1",
-                  id: "Jacket/Jac_Pocket_Decor_LEFT_V1",
+                  id: "Jacket/Jac_Planka",
+                  label: "Jac_Planka",
                 },
                 {
-                  label: "Jac_Pocket_Decor_RIGHT_V1",
-                  id: "Jacket/Jac_Pocket_Decor_RIGHT_V1",
-                },
-                {
-                  label: "Jac_Pocket_LEFT_V1",
                   id: "Jacket/Jac_Pocket_LEFT_V1",
+                  label: "Jac_Pocket_LEFT_V1",
                 },
                 {
-                  label: "Jac_Pocket_LEFT_V2",
+                  id: "Jacket/Jac_Pocket_LEFT_V1_Dop",
+                  label: "Jac_Pocket_LEFT_V1_Dop",
+                },
+                {
                   id: "Jacket/Jac_Pocket_LEFT_V2",
+                  label: "Jac_Pocket_LEFT_V2",
                 },
                 {
-                  label: "Jac_Pocket_RIGHT_V1",
                   id: "Jacket/Jac_Pocket_RIGHT_V1",
+                  label: "Jac_Pocket_RIGHT_V1",
                 },
                 {
-                  label: "Jac_Pocket_RIGHT_V2",
+                  id: "Jacket/Jac_Pocket_RIGHT_V1_Dop",
+                  label: "Jac_Pocket_RIGHT_V1_Dop",
+                },
+                {
                   id: "Jacket/Jac_Pocket_RIGHT_V2",
+                  label: "Jac_Pocket_RIGHT_V2",
                 },
                 {
-                  label: "Jac_Rukav_V1",
-                  id: "Jacket/Jac_Rukav_V1",
+                  id: "Jacket/Jac_Rope_Sleeves_V1",
+                  label: "Jac_Rope_Sleeves_V1",
                 },
                 {
-                  label: "Jac_Rukav_V2",
-                  id: "Jacket/Jac_Rukav_V2",
+                  id: "Jacket/Jac_Rope_Sleeves_V2",
+                  label: "Jac_Rope_Sleeves_V2",
                 },
               ],
             },
@@ -264,64 +285,64 @@ export default defineComponent({
               id: "Keks",
               children: [
                 {
-                  label: "Pants_Decor_Pocket_Left_V1",
+                  id: "Pants/Pants_COP_Knee_Back",
+                  label: "Pants_COP_Knee_Back",
+                },
+                {
+                  id: "Pants/Pants_COP_Knee_Face",
+                  label: "Pants_COP_Knee_Face",
+                },
+                {
+                  id: "Pants/Pants_COP_UNDERKnee",
+                  label: "Pants_COP_UNDERKnee",
+                },
+                {
                   id: "Pants/Pants_Decor_Pocket_Left_V1",
+                  label: "Pants_Decor_Pocket_Left_V1",
                 },
                 {
-                  label: "Pants_Decor_Pocket_Left_V2",
                   id: "Pants/Pants_Decor_Pocket_Left_V2",
+                  label: "Pants_Decor_Pocket_Left_V2",
                 },
                 {
-                  label: "Pants_Decor_Pocket_Right_V1",
                   id: "Pants/Pants_Decor_Pocket_Right_V1",
+                  label: "Pants_Decor_Pocket_Right_V1",
                 },
                 {
-                  label: "Pants_Decor_Pocket_Right_V2",
                   id: "Pants/Pants_Decor_Pocket_Right_V2",
+                  label: "Pants_Decor_Pocket_Right_V2",
                 },
                 {
-                  label: "Pants_Flic_Knee_BACK",
-                  id: "Pants/Pants_Flic_Knee_BACK",
-                },
-                {
-                  label: "Pants_Flic_Knee_FACE",
-                  id: "Pants/Pants_Flic_Knee_FACE",
-                },
-                {
-                  label: "Pants_Flic_UNDER_KNEE",
-                  id: "Pants/Pants_Flic_UNDER_KNEE",
-                },
-                {
-                  label: "Pants_Knee",
                   id: "Pants/Pants_Knee",
+                  label: "Pants_Knee",
                 },
                 {
-                  label: "Pants_Main",
                   id: "Pants/Pants_Main",
+                  label: "Pants_Main",
                 },
                 {
-                  label: "Pants_Pocket_BEHINDE",
                   id: "Pants/Pants_Pocket_BEHINDE",
+                  label: "Pants_Pocket_BEHINDE",
                 },
                 {
-                  label: "Pants_Pocket_Left_V1",
-                  id: "Pants/Pants_Pocket_Left_V1",
-                },
-                {
-                  label: "Pants_Pocket_Left_V2",
-                  id: "Pants/Pants_Pocket_Left_V2",
-                },
-                {
-                  label: "Pants_Pocket_Right_V1",
-                  id: "Pants/Pants_Pocket_Right_V1",
-                },
-                {
-                  label: "Pants_Pocket_RIght_V2",
-                  id: "Pants/Pants_Pocket_RIght_V2",
-                },
-                {
-                  label: "Pants_Pocket_TOP",
                   id: "Pants/Pants_Pocket_TOP",
+                  label: "Pants_Pocket_TOP",
+                },
+                {
+                  id: "Pants/Pocket_Left_V1",
+                  label: "Pocket_Left_V1",
+                },
+                {
+                  id: "Pants/Pocket_Left_V2",
+                  label: "Pocket_Left_V2",
+                },
+                {
+                  id: "Pants/Pocket_Right_V1",
+                  label: "Pocket_Right_V1",
+                },
+                {
+                  id: "Pants/Pocket_Right_V2",
+                  label: "Pocket_Right_V2",
                 },
               ],
             },
@@ -419,18 +440,13 @@ export default defineComponent({
       container.appendChild(this.renderer.domElement);
     },
 
-    handleShowEvent(value) {
-      console.log(value)
-    },
+    UpdateModel(value, option) {
+      this.scene.remove(this.models[this.elements_to_models[option]]);
 
-    handleUpdateValue() {
-      console.log(1)
-      // value = value[value.length - 1];
-      // this.scene.remove(this.models[this.elements_to_models[option]]);
-      // this.elements[option] = value;
-      //
-      // let color = this.elements_color[option]
-      // this.load_model(value, color, false, option);
+      let color = this.elements_color[option]
+      console.log(this.ropes_color)
+      console.log(typeof(this.ropes_color))
+      this.load_model(value, color, false, option, this.ropes_color);
     },
 
     addRow() {
@@ -449,6 +465,19 @@ export default defineComponent({
       this.renderer.render(this.scene, this.camera);
     },
 
+    changeRopesColor: function () {
+      let color = this.ropes_color
+      for (let i=0; i < this.models.length; i ++) {
+        this.models[i].traverse(function (model) {
+          if (model.isMesh) {
+            if (model.material.name === "Rope") {
+              model.material.color = new Three.Color(color);
+            }
+          }
+        })
+      }
+    },
+
     sex_change: function (model) {
       if (typeof (model) != "string") {
         model = model.target.value;
@@ -462,7 +491,7 @@ export default defineComponent({
       if (typeof (model) != "string") {
         model = model.target.value;
       }
-
+      let rope_color = this.ropes_color;
       this.loader.load(`models/${this.sex}/${model}.glb`, (gltf) => {
         gltf.scene.position.y = -1;
         gltf.scene.position.z = -0.8;
@@ -472,6 +501,9 @@ export default defineComponent({
             model.castShadow = true;
             if (color) {
               model.material.color = new Three.Color(color);
+            }
+            if (model.material.name === "Rope") {
+              model.material.color = new Three.Color(rope_color);
             }
           }
         });
@@ -486,7 +518,7 @@ export default defineComponent({
           for (let key in this.elements) {
             console.log(this.elements[key])
             if (this.elements[key] !== -1) {
-              this.load_model(this.elements[key], this.elements_color[key], false, key)
+              this.load_model(this.elements[key], this.elements_color[key], false, key, this.ropes_color)
             }
           }
         } else {
@@ -502,7 +534,9 @@ export default defineComponent({
     change_color(value, index) {
       this.models[this.elements_to_models[index]].traverse(function (model) {
         if (model.isMesh) {
-          model.material.color = new Three.Color(value);
+          if (model.material.name !== "Rope") {
+            model.material.color = new Three.Color(value);
+          }
         }
       })
     },
@@ -520,7 +554,7 @@ export default defineComponent({
       this.mouseClickedRight = false;
     },
     mouseWheel(event) {
-      this.camera.position.z = this.camera.position.z + event.deltaY / 100
+      this.camera.position.z = this.camera.position.z + event.deltaY / 500
       this.camera.position.z = Math.max(this.camera.position.z, -0.2)
       this.camera.position.z = Math.min(this.camera.position.z, 5)
     },
@@ -553,8 +587,15 @@ export default defineComponent({
 
   watch: {
     elements: {
-      handler(val, oldVal) {
-        console.log(val, oldVal)
+      handler(val) {
+        for (let key in val) {
+          if (!(key in Object.keys(this.active_elements)) || val[key] !== this.active_elements[key]) {
+            if (val[key] !== -1) {
+              this.UpdateModel(val[key], key);
+            }
+          }
+        }
+        Object.assign(this.active_elements, val)
       },
       deep: true,
     }
@@ -564,8 +605,6 @@ export default defineComponent({
     this.init();
     this.animate();
     this.sex_change(this.selected);
-    // this.load_model("Jacket/Jac_Main");
-    // this.load_model("Pants/Pants_Main");
   }
 })
 </script>
@@ -689,7 +728,6 @@ header {
 
 .inline-element {
   display: inline-block;
-  margin-right: 10px;
   vertical-align: middle;
   height: 100%;
 }
