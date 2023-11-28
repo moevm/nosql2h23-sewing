@@ -1,3 +1,5 @@
+import datetime
+
 from pymongo import MongoClient
 
 import bcrypt
@@ -42,9 +44,34 @@ class DatabaseService:
             "name": name,
             "contact_person": contact_person,
             "phone": phone,
+            "status": "Need to approve",
+            "orders": [],
+            "created_at": datetime.datetime.now(),
+            "about": ""
         })
 
         return self.companies_collection.find_one({"email": email}, {"_id": False})
 
     async def get_company(self, email: EmailStr):
         return self.companies_collection.find_one({"email": email}, {"_id": False})
+
+    async def register_customer(self, email: EmailStr, password: str, TIN: str, name: str, contact_person: str, phone: str):
+        hashed_password = bcrypt.hashpw(password=password.encode("utf-8"), salt=bcrypt.gensalt())
+        self.customers_collection.insert_one({
+            "_id": self.customers_collection.count_documents({}),
+            "email": email,
+            "hashed_password": hashed_password,
+            "TIN": TIN,
+            "name": name,
+            "contact_person": contact_person,
+            "phone": phone,
+            "status": "Need to approve",
+            "orders": [],
+            "created_at": datetime.datetime.now(),
+            "about": ""
+        })
+
+        return self.customers_collection.find_one({"email": email}, {"_id": False})
+
+    async def get_customer(self, email: EmailStr):
+        return self.customers_collection.find_one({"email": email}, {"_id": False})
