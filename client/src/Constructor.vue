@@ -567,8 +567,8 @@ export default defineComponent({
       }
       if (this.mouseClickedRight) {
         this.camera.position.y -= (this.lastMPos.y - event.clientY) * 0.001;
-        this.camera.position.y = Math.max(this.camera.position.y, -0.3)
-        this.camera.position.y = Math.min(this.camera.position.y, 2)
+        this.camera.position.y = Math.max(this.camera.position.y, -0.6)
+        this.camera.position.y = Math.min(this.camera.position.y, 2.2)
 
         this.camera.position.x += (this.lastMPos.x - event.clientX) * 0.002;
         this.camera.position.x = Math.max(this.camera.position.x, -0.3)

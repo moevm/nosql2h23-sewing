@@ -43,12 +43,17 @@ export default {
 
       const formData = new FormData();
       formData.append("file", this.selectedFile);
-      formData.append("path_to_model", this.path_to_model);
+      formData.append("path_to_model", this.path_to_model || "");
 
       console.log(this.path_to_model)
       console.log(this.selectedFile)
 
-      axios.post("http://127.0.0.1:8081/api/admin/load_model", formData, {
+      for (var key of formData.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+      }
+
+
+      axios.post("http://127.0.0.1:3000/api/admin/load_model", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
