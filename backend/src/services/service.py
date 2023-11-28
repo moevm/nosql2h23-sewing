@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routes.company import company_router
 from .routes.customer import customer_router
+from .routes.admin import admin_router
 from backend.src.database.database import DatabaseService
 
 
@@ -32,4 +33,5 @@ class APIService:
 
         api_router.include_router(router=company_router, prefix="/company", tags=["Company"])
         api_router.include_router(router=customer_router, prefix="/customer", tags=["Customer"])
+        api_router.include_router(router=admin_router, prefix="/admin", tags=["Admin"])
         self.app.include_router(router=api_router)

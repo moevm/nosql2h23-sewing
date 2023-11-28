@@ -1,7 +1,5 @@
-from typing import Optional
-
 from pydantic import BaseModel
 
 
-class ModelInSchema(BaseModel):
+class RestModelLoad(BaseModel):
     path_to_model: str
