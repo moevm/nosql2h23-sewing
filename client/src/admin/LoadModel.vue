@@ -9,9 +9,23 @@
                    @change="handleFileChange"/>
           </div>
           <div class="form-group">
+            <label for="login"><b>Имя модели у пользователя</b></label>
+            <input class="form-control" placeholder="Введите путь к модели" type="text" v-model="name"/>
+          </div>
+
+          <div class="form-group">
+            <label for="login"><b>Тип модели</b></label>
+            <input class="form-control" placeholder="Введите путь к модели" type="text" v-model="model_type"/>
+          </div>
+
+          <div class="form-group">
+            <label for="login"><b>Описание</b></label>
+            <input class="form-control" placeholder="Введите путь к модели" type="text" v-model="description"/>
+          </div>
+
+          <div class="form-group">
             <label for="login"><b>Путь к модели на сервере</b></label>
-            <input class="form-control" placeholder="Введите путь к модели" type="text" :value="path_to_model"
-                   @input="event => path_to_model = event.target.value"/>
+            <input class="form-control" placeholder="Введите путь к модели" type="text" v-model="path_to_model"/>
           </div>
 
           <button type="submit" class="btn btn-success" @click="uploadFile">Загрузить модель</button>
@@ -27,6 +41,9 @@ import axios from "axios";
 export default {
   data() {
     return {
+      name: "",
+      model_type: "",
+      description: "",
       path_to_model: "",
       selectedFile: null,
     };
@@ -43,10 +60,10 @@ export default {
 
       const formData = new FormData();
       formData.append("file", this.selectedFile);
+      formData.append("name", this.name || "");
+      formData.append("type_of_model", this.model_type || "");
+      formData.append("description", this.description || "");
       formData.append("path_to_model", this.path_to_model || "");
-
-      console.log(this.path_to_model)
-      console.log(this.selectedFile)
 
       for (var key of formData.entries()) {
         console.log(key[0] + ', ' + key[1]);
