@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes.company import company_router
 from .routes.customer import customer_router
 from .routes.admin import admin_router
-from backend.src.database.database import DatabaseService
+from ..database.database import DatabaseService
 
 
 class APIService:

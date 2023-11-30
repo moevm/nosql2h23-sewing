@@ -2,7 +2,7 @@ import aiofiles as aiofiles
 from fastapi import APIRouter, status, Request, UploadFile, File, Form
 from ..schemas.admin import RestModelLoad
 from typing import Annotated
-from backend.src.database.database import DatabaseService
+from ...database.database import DatabaseService
 
 import os
 

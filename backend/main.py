@@ -1,10 +1,9 @@
 from starlette.middleware.cors import CORSMiddleware
-from services.service import APIService
-from database.database import DatabaseService
+from src.services.service import APIService
+from src.database.database import DatabaseService
 
 import uvicorn
 
-# api = APIService(DatabaseService("postgresql+asyncpg://postgres:password@localhost:5432/your_dormitory"))
 api = APIService(DatabaseService("mongodb://localhost:27017"))
 
 api.app.add_middleware(
