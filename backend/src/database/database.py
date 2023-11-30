@@ -20,21 +20,20 @@ class DatabaseService:
     def get_model(self):
         return self.models_collection.find_one({}, {'_id': False})
 
-    def load_model(self, model, path_to_model, model_type='', attaches_to=None, description=''):
-        if attaches_to is None:
-            attaches_to = []
-        file_path = f"../models/{path_to_model}"
-        with open(file_path, "wb") as f:
-            f.write(model)
+    def load_model(self, name, model, path_to_model, model_type='', description=''):
         self.models_collection.insert_one({
             "_id": self.models_collection.count_documents({}),
+            "name": name,
+            "model": model,
             "path_to_model": path_to_model,
             "type": model_type,
-            "attaches_to": attaches_to,
+            "status": 0,
+            "conflicts_to": [],
             "description": description
         })
 
-    async def register_company(self, email: EmailStr, password: str, TIN: str, name: str, contact_person: str, phone: str):
+    async def register_company(self,
+                               email: EmailStr, password: str, TIN: str, name: str, contact_person: str, phone: str):
         hashed_password = bcrypt.hashpw(password=password.encode("utf-8"), salt=bcrypt.gensalt())
         self.companies_collection.insert_one({
             "_id": self.companies_collection.count_documents({}),
@@ -55,7 +54,8 @@ class DatabaseService:
     async def get_company(self, email: EmailStr):
         return self.companies_collection.find_one({"email": email}, {"_id": False})
 
-    async def register_customer(self, email: EmailStr, password: str, TIN: str, name: str, contact_person: str, phone: str):
+    async def register_customer(self, email: EmailStr, password: str, TIN: str, name: str, contact_person: str,
+                                phone: str):
         hashed_password = bcrypt.hashpw(password=password.encode("utf-8"), salt=bcrypt.gensalt())
         self.customers_collection.insert_one({
             "_id": self.customers_collection.count_documents({}),
