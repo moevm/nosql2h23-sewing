@@ -12,7 +12,7 @@ import LoadModel from "./admin/LoadModel.vue";
 const router = createRouter({
     routes: [
         {
-            path: '/constructor',
+            path: '/',
             component: Constructor
         },
         {

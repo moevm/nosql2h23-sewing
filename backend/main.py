@@ -1,20 +1,25 @@
-import uvicorn
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
+from src.services.service import APIService
+from src.database.database import DatabaseService
 
-app = FastAPI()
+import uvicorn
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+api = APIService(DatabaseService("mongodb://localhost:27017"))
 
-origins = ["*"]
-app.add_middleware(
+api.app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=[""],
-    allow_headers=[""],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
+
+@api.app.get("/api/health")
+async def root():
+    return {"status": "OK"}
+
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8081, reload=True, workers=1)
+    # init_db()
+    uvicorn.run("main:api.app", port=3000, reload=True, workers=1)
