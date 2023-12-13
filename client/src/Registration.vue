@@ -2,7 +2,7 @@
   <section>
     <div class="content">
       <div class="card">
-        <form action="//msiter.ru/action_page.php">
+        <form>
           <div class="container">
             <img src="@/assets/logo.png" id="logo"/>
             <div style="font-size: 12px">
@@ -131,5 +131,6 @@ a {
 #logo {
   margin-bottom: 20px;
   text-align: center;
+  width: 100%;
 }
 </style>
