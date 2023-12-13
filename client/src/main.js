@@ -8,7 +8,6 @@ import Login from './Login.vue'
 import Registration from "@/Registration";
 import Constructor from "./Constructor";
 import LoadModel from "./admin/LoadModel.vue";
-import MenuComponent from "./MenuComponent.vue"
 
 const router = createRouter({
     routes: [
@@ -28,10 +27,6 @@ const router = createRouter({
             path: '/admin/load_model',
             component: LoadModel
         },
-        {
-            path: '/menu',
-            component: MenuComponent
-        }
     ],
     history: createWebHistory()
 })

@@ -1,11 +1,11 @@
 <template>
-  <HeaderComponent />
+  <HeaderComponent/>
 
   <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu; color: #24509c">
     Конструктор спецодежды</h1>
   <br>
   <div id="wrapper" style="font-family: Ubuntu">
-    <MenuComponent />
+    <MenuComponent/>
     <div id="viewer" @mousemove="mouseMove" @mousedown.left="mouseDownLeft" @mouseup.left="mouseUpLeft"
          @mousewheel='mouseWheel' oncontextmenu="return false;"
          @mousedown.right="mouseDownRight" @mouseup.right="mouseUpRight">
@@ -55,9 +55,7 @@
       </button>
     </div>
   </div>
-  <div id="footer">
-    © Компания ООО "ЛенСИЗ", 2019.
-  </div>
+  <FooterComponent/>
 </template>
 
 <script>
@@ -70,10 +68,11 @@ import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 import HeaderComponent from "@/HeaderComponent";
 import MenuComponent from "@/MenuComponent";
+import FooterComponent from "@/FooterComponent";
 
 export default defineComponent({
   name: 'App',
-  components: {ColorPicker, CCloseButton, HeaderComponent, MenuComponent},
+  components: {ColorPicker, CCloseButton, HeaderComponent, MenuComponent, FooterComponent},
 
   data() {
     return {
@@ -538,18 +537,6 @@ export default defineComponent({
   margin-left: 5vw;
   width: 90vw;
   height: 70vh;
-}
-
-
-#footer {
-  background-color: #062051;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  width: 100%;
-  font-size: 19px;
-  color: #fafaff;
 }
 
 #add_button {
