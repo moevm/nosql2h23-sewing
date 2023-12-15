@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 
 class Auth:
     hasher = CryptContext(schemes=['bcrypt'])
-    secret = "your_dormitory_ETU"
+    secret = "sewing_ETU_FoazUy113Zhfs51"
 
     def hash_password(self, password):
         return self.hasher.hash(password)
@@ -18,7 +18,7 @@ class Auth:
     def create_token(self, username):
         payload = {
             "iat": datetime.utcnow(),
-            "exp": datetime.utcnow() + timedelta(days=0, minutes=30),
+            "exp": datetime.utcnow() + timedelta(days=7),
             "scope": "access_token",
             "sub": username
         }
@@ -42,7 +42,7 @@ class Auth:
     def create_refresh_token(self, username):
         payload = {
             "iat": datetime.utcnow(),
-            "exp": datetime.utcnow() + timedelta(days=0, hours=10),
+            "exp": datetime.utcnow() + timedelta(days=7),
             "scope": "refresh_token",
             "sub": username
         }
@@ -72,3 +72,10 @@ if __name__ == "__main__":
     is_correct = auth.verify_password("12345", test_hash)
     print(is_correct)
     print(test_hash)
+
+    payload = {'role': "admin"}
+    token = auth.create_token(payload)
+    print(token)
+    decoded_payload = auth.decode_token(token)
+    print(decoded_payload)
+    print(type(decoded_payload))
