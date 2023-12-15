@@ -1,8 +1,9 @@
 import aiofiles as aiofiles
 from fastapi import APIRouter, status, Request, UploadFile, File, Form
-from ..schemas.admin import RestModelLoad
 from typing import Annotated
 from ...database.database import DatabaseService
+from ..schemas.admin import RestToken, RestApproveForm
+from ..utils.jwt_processing import Auth
 
 import os
 
@@ -10,6 +11,7 @@ admin_router = APIRouter(
     tags=["admin"],
     responses={404: {"description": "Not found"}},
 )
+auth = Auth()
 
 
 @admin_router.post(
@@ -50,3 +52,47 @@ async def load_model(request: Request,
         description=description
     )
     return status.HTTP_201_CREATED
+
+
+@admin_router.post(
+    path="/registration_applications",
+    status_code=status.HTTP_200_OK,
+    responses={400: {}, 401: {}, 403: {}},
+)
+async def registration_applications(request: Request, token: RestToken):
+    database: DatabaseService = request.app.state.database
+    if auth.decode_token(token.token)["role"] != "admin":
+        return status.HTTP_403_FORBIDDEN
+    return await database.get_registration_applications()
+
+
+@admin_router.post(
+    path="/approve_application",
+    status_code=status.HTTP_200_OK,
+    responses={400: {}, 401: {}, 403: {}},
+)
+async def approve_application(request: Request, form: RestApproveForm):
+    database: DatabaseService = request.app.state.database
+    if auth.decode_token(form.token)["role"] != "admin":
+        return status.HTTP_403_FORBIDDEN
+    if form.type == "customer":
+        await database.approve_customer(form.id)
+    elif form.type == "company":
+        await database.approve_company(form.id)
+    return status.HTTP_200_OK
+
+
+@admin_router.post(
+    path="/decline_application",
+    status_code=status.HTTP_200_OK,
+    responses={400: {}, 401: {}, 403: {}},
+)
+async def decline_application(request: Request, form: RestApproveForm):
+    database: DatabaseService = request.app.state.database
+    if auth.decode_token(form.token)["role"] != "admin":
+        return status.HTTP_403_FORBIDDEN
+    if form.type == "customer":
+        await database.decline_customer(form.id)
+    elif form.type == "company":
+        await database.decline_customer(form.id)
+    return status.HTTP_200_OK
