@@ -4,7 +4,7 @@ from src.database.database import DatabaseService
 
 import uvicorn
 
-api = APIService(DatabaseService("mongodb://localhost:27017"))
+api = APIService(DatabaseService("mongodb://filipp:creator_of_the_world_1232122@localhost:27017/?retryWrites=true&w=majority"))
 
 api.app.add_middleware(
     CORSMiddleware,
