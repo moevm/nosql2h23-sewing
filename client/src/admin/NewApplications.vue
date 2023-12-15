@@ -1,23 +1,25 @@
 <template>
-  <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu; padding-top: 10px; color: #24509c">
+  <HeaderComponent/>
+  <h1 class="display-1"
+      style="text-align: center; font-size: 46px; font-family: Ubuntu; padding-top: 10px; color: #24509c">
     Новые регистрации</h1>
-  <div class="inner">
+  <div id="wrapper" style="font-family: Ubuntu">
     <AdminMenuComponent/>
   </div>
+  <FooterComponent/>
 </template>
 
 <script>
 import {defineComponent} from "vue";
 import AdminMenuComponent from "@/admin/AdminMenuComponent";
+import HeaderComponent from "@/HeaderComponent";
+import FooterComponent from "@/FooterComponent";
 
 export default defineComponent({
   name: 'App',
-  components: {AdminMenuComponent},
+  components: {HeaderComponent, FooterComponent, AdminMenuComponent},
 })
 </script>
 
 <style scoped>
-.inner {
-  vertical-align: middle;
-}
 </style>

@@ -57,7 +57,7 @@ export default {
 }
 
 .menu_container {
-  padding-top: 50%;
-  padding-left: 5%;
+  /*padding-top: 50%;*/
+  /*padding-left: 5%;*/
 }
 </style>
