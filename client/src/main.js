@@ -5,6 +5,7 @@ import naive from "naive-ui";
 import {createRouter, createWebHistory} from 'vue-router'
 import App from './App.vue'
 import Login from './Login.vue'
+import ModelEditor from './admin/ModelEditor.vue'
 import NewApplication from './admin/NewApplications.vue'
 import Registration from "@/Registration";
 import Constructor from "./Constructor";
@@ -31,6 +32,10 @@ const router = createRouter({
         {
             path: '/admin/new_applications',
             component: NewApplication
+        },
+        {
+            path: '/admin/model_editor',
+            component: ModelEditor
         },
     ],
     history: createWebHistory()
