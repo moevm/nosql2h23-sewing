@@ -56,12 +56,6 @@
             </div>
             <button type="submit" class="registerbtn" ref="submit">Регистрация</button>
           </div>
-          <VueRecaptcha
-              :sitekey="siteKey"
-              :load-recaptcha-script="true"
-              @verify="handleSuccess"
-              @error="handleError"
-          ></VueRecaptcha>
         </form>
       </div>
     </div>
@@ -71,30 +65,40 @@
 <script>
 export default {
   name: "RegistrationPage",
+  methods: {
+    checkForm() {
+      return this.$refs.login.value !== "" && this.$refs.psw.value !== "" && this.$refs.inn.value !== "" &&
+          this.$refs.companyName.value !== "" && this.$refs.contact.value !== "" && this.$refs.phone.value !== ""
+    }
+  },
   mounted() {
     this.$refs.submit.addEventListener('click', () => {
-      let url = ""
-      if (this.$refs.customerRadio.checked) {
-        url = 'http://127.0.0.1:3000/api/customer/register'
-      } else {
-        url = 'http://127.0.0.1:3000/api/company/register'
-      }
+      if (this.checkForm()) {
+        let url = ""
+        if (this.$refs.customerRadio.checked) {
+          url = 'http://127.0.0.1:3000/api/customer/register'
+        } else {
+          url = 'http://127.0.0.1:3000/api/company/register'
+        }
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "email": String(this.$refs.login.value),
-          "password": String(this.$refs.psw.value),
-          "TIN": String(this.$refs.inn.value),
-          "name": String(this.$refs.companyName.value),
-          "contact_person": String(this.$refs.contact.value),
-          "phone": String(this.$refs.phone.value)
-        })
-      })
+        fetch(url, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                "email": String(this.$refs.login.value),
+                "password": String(this.$refs.psw.value),
+                "TIN": String(this.$refs.inn.value),
+                "name": String(this.$refs.companyName.value),
+                "contact_person": String(this.$refs.contact.value),
+                "phone": String(this.$refs.phone.value)
+              })
+            }
+        )
+        window.location.href = "/login"
+      }
     })
   }
 }

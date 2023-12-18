@@ -9,41 +9,49 @@
               <div class="form-group">
                 <label for="login"><b>Логин</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите логин" name="login"
-                       id="login" required>
+                       id="login" ref="login" required>
               </div>
 
               <div class="form-group">
                 <label for="psw"><b>Пароль</b></label>
-                <input style="font-size: 12px" class="form-control" type="password" placeholder="Введите пароль"
+                <input style="font-size: 12px" class="form-control" type="password" ref="psw" placeholder="Введите пароль"
                        name="psw" id="psw" required>
               </div>
             </div>
             <div>
               <input type="checkbox" id="remember-me" name="remember" style="scale: 90%"/>
-              <label for="remember-me" style="font-size: 12px; margin-left: 5px; margin-bottom: 5px">Remember Me</label>
+              <label for="remember-me" style="font-size: 12px; margin-left: 5px; margin-bottom: 5px">Запомнить меня</label>
             </div>
-            <button type="submit" class="registerbtn">Войти</button>
+            <button type="submit" class="registerbtn" ref="submit">Войти</button>
           </div>
-          <VueRecaptcha
-              :sitekey="siteKey"
-              :load-recaptcha-script="true"
-              @verify="handleSuccess"
-              @error="handleError"
-          ></VueRecaptcha>
         </form>
+        <a href="/registration" style="text-align: center; font-size: 14px; padding-bottom: 10px">Регистрация</a>
+
       </div>
+
     </div>
   </section>
 </template>
 
 <script>
-import {VueRecaptcha} from 'vue-recaptcha';
-
 export default {
   name: "LoginPage",
-  components: {
-    VueRecaptcha
-  },
+  mounted() {
+    this.$refs.submit.addEventListener('click', async () => {
+      const response = await fetch("http://127.0.0.1:3000/api/customer/login", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "email": String(this.$refs.login.value),
+          "password": String(this.$refs.psw.value),
+        })
+      })
+      console.log(await response.json()["access_token"])
+    })
+  }
 }
 </script>
 
