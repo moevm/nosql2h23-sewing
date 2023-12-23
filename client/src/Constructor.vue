@@ -1,6 +1,6 @@
 <template>
-  <header style="font-family: Ubuntu;">
-    <img src="@/assets/logo.png" id="logo"/>
+  <header style="font-family: Ubuntu,serif;">
+    <img src="@/assets/logo.png" id="logo" alt=""/>
     <div class="header_core">
       <a href="/constructor" class="header_link">Конструктор</a>
       <a href="/projects" class="header_link">Мои проекты</a>
@@ -28,11 +28,11 @@
     </div>
   </header>
 
-  <hr style="width: 92vw; margin-left: 4vw; margin-top: 0vw">
-  <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu; color: #24509c">
+  <hr style="width: 92vw; margin-left: 4vw; margin-top: 0">
+  <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu,serif; color: #24509c">
     Конструктор спецодежды</h1>
   <br>
-  <div id="wrapper" style="font-family: Ubuntu">
+  <div id="wrapper" style="font-family: Ubuntu,serif">
     <div id="menu">
       <ul class="list-group list-group-flush">
         <li class="menu_button list-group-item" style="border-radius: 10px">
@@ -61,13 +61,26 @@
     </div>
     <div id="select">
       <div style="padding-bottom: 10px; text-align: center">
-        <select v-model="selected" @change="sex_change($event)" class="select form-select"
-                style="display: inline-block; width: 75%">
-          <option v-for="option in options" :value="option.value" :key="option.value">
+        <select v-model="work_selected" @change="work_change($event)" class="select form-select"
+                style="display: inline-block; width: 75%; margin-bottom: 10px">
+          <option v-for="option in work_options" :value="option.value" :key="option.value">
             {{ option.text }}
           </option>
         </select>
 
+        <select v-model="season_selected" @change="season_change($event)" class="select form-select"
+                style="display: inline-block; width: 75%; margin-bottom: 10px">
+          <option v-for="option in season_options" :value="option.value" :key="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+
+        <select v-model="sex_selected" @change="sex_change($event)" class="select form-select"
+                style="display: inline-block; width: 75%; margin-bottom: 10px">
+          <option v-for="option in sex_options" :value="option.value" :key="option.value">
+            {{ option.text }}
+          </option>
+        </select>
       </div>
       <div style="padding-bottom: 10px; text-align: center">
         Начальный цвет:
@@ -132,6 +145,7 @@ export default defineComponent({
   data() {
     return {
       sex: "Man",
+      season: "Summer",
       last_element_id: 0,
       start_color: "rgb(215, 215, 215)",
       ropes_color: "rgb(0, 0, 0)",
@@ -139,10 +153,19 @@ export default defineComponent({
       active_elements: {},
       elements_to_models: {},
       elements_color: {},
-      selected: 'Man/Man/Man',
-      options: [
+      sex_selected: 'Man/Man/Man',
+      sex_options: [
         {text: 'Мужчина', value: 'Man/Man/Man'},
         {text: 'Женщина', value: 'Woman/Human/Woman'},
+      ],
+      season_selected: 'Summer',
+      season_options: [
+        {text: 'Лето', value: 'Summer'},
+        {text: 'Зима', value: 'Winter'},
+      ],
+      work_selected: 'Factory',
+      work_options: [
+        {text: 'Рабочий', value: 'Factory'}
       ],
       tree_options: [
         {
@@ -445,7 +468,7 @@ export default defineComponent({
 
       let color = this.elements_color[option]
       console.log(this.ropes_color)
-      console.log(typeof(this.ropes_color))
+      console.log(typeof (this.ropes_color))
       this.load_model(value, color, false, option, this.ropes_color);
     },
 
@@ -467,7 +490,7 @@ export default defineComponent({
 
     changeRopesColor: function () {
       let color = this.ropes_color
-      for (let i=0; i < this.models.length; i ++) {
+      for (let i = 0; i < this.models.length; i++) {
         this.models[i].traverse(function (model) {
           if (model.isMesh) {
             if (model.material.name === "Rope") {
@@ -475,6 +498,428 @@ export default defineComponent({
             }
           }
         })
+      }
+    },
+
+    work_change: function (event) {
+      if (typeof (event) != "string") {
+        event = event.target.value;
+      }
+      this.work = event;
+      console.log(event)
+    },
+
+    season_change: function (event) {
+      if (typeof (event) != "string") {
+        event = event.target.value;
+      }
+      this.season = event;
+      if (this.season === "Winter" && this.work === "Factory") {
+        this.tree_options = [
+          {
+            id: -1,
+            label: "Выберите элемент...",
+            isDisabled: true
+          },
+          {
+            id: "Comb",
+            label: "Комбинезоны",
+            children: [
+              {
+                id: "Comb/Combinezon",
+                label: "Combinezon",
+              },
+              {
+                id: "Comb/COP_Back",
+                label: "COP_Back",
+              },
+              {
+                id: "Comb/COP_Front",
+                label: "COP_Front",
+              },
+              {
+                id: "Comb/COP_Under",
+                label: "COP_Under",
+              },
+              {
+                id: "Comb/Decor_Under",
+                label: "Decor_Under",
+              },
+              {
+                id: "Comb/Knee",
+                label: "Knee",
+              },
+              {
+                id: "Comb/Pocket",
+                label: "Pocket",
+              },
+              {
+                id: "Comb/Ziplock_Center",
+                label: "Ziplock_Center",
+              },
+              {
+                id: "Comb/Ziplock_L",
+                label: "Ziplock_L",
+              },
+              {
+                id: "Comb/Ziplock_R",
+                label: "Ziplock_R",
+              },
+            ],
+          },
+          {
+            label: "Hood1",
+            id: "hood1",
+            children: [
+              {
+                id: "Hood1/Hood1",
+                label: "Hood1",
+              },
+            ],
+          },
+          {
+            label: "Hood2",
+            id: "hood2",
+            children: [
+              {
+                id: "Hood2/Decor_Hood_Back",
+                label: "Decor_Hood_Back",
+              },
+              {
+                id: "Hood2/Hood2",
+                label: "Hood2",
+              },
+              {
+                id: "Hood2/Screed",
+                label: "Screed",
+              },
+            ],
+          },
+          {
+            label: "Jac_Winter",
+            id: "Jac_Winter",
+            children: [
+              {
+                id: "Jac_Winter/COP_Arm_Down",
+                label: "COP_Arm_Down",
+              },
+              {
+                id: "Jac_Winter/COP_Arm_Up",
+                label: "COP_Arm_Up",
+              },
+              {
+                id: "Jac_Winter/COP_Bust_V1",
+                label: "COP_Bust_V1",
+              },
+              {
+                id: "Jac_Winter/COP_Bust_V2",
+                label: "COP_Bust_V2",
+              },
+              {
+                id: "Jac_Winter/COP_Spine_V1",
+                label: "COP_Spine_V1",
+              },
+              {
+                id: "Jac_Winter/COP_Spine_V2",
+                label: "COP_Spine_V2",
+              },
+              {
+                id: "Jac_Winter/Decor_Breast",
+                label: "Decor_Breast",
+              },
+              {
+                id: "Jac_Winter/Decor_Hand_Down",
+                label: "Decor_Hand_Down",
+              },
+              {
+                id: "Jac_Winter/Decor_Hand_Up_V1",
+                label: "Decor_Hand_Up_V1",
+              },
+              {
+                id: "Jac_Winter/Decor_Hand_Up_V2",
+                label: "Decor_Hand_Up_V2",
+              },
+              {
+                id: "Jac_Winter/Decor_Planka",
+                label: "Decor_Planka",
+              },
+              {
+                id: "Jac_Winter/Decor_Pocket_Left_V1",
+                label: "Decor_Pocket_Left_V1",
+              },
+              {
+                id: "Jac_Winter/Decor_Pocket_Right_V1",
+                label: "Decor_Pocket_Right_V1",
+              },
+              {
+                id: "Jac_Winter/Decor_Shoulder",
+                label: "Decor_Shoulder",
+              },
+              {
+                id: "Jac_Winter/Decor_Strap_Hands",
+                label: "Decor_Strap_Hands",
+              },
+              {
+                id: "Jac_Winter/Jac_Winter",
+                label: "Jac_Winter",
+              },
+              {
+                id: "Jac_Winter/Jac_Winter_V2",
+                label: "Jac_Winter_V2",
+              },
+              {
+                id: "Jac_Winter/Neck",
+                label: "Neck",
+              },
+              {
+                id: "Jac_Winter/Planka",
+                label: "Planka",
+              },
+              {
+                id: "Jac_Winter/Pocket_Left_V1",
+                label: "Pocket_Left_V1",
+              },
+              {
+                id: "Jac_Winter/Pocket_Left_V2",
+                label: "Pocket_Left_V2",
+              },
+              {
+                id: "Jac_Winter/Pocket_Right_V1",
+                label: "Pocket_Right_V1",
+              },
+              {
+                id: "Jac_Winter/Pocket_Right_V2",
+                label: "Pocket_Right_V2",
+              },
+              {
+                id: "Jac_Winter/Rukav",
+                label: "Rukav",
+              },
+              {
+                id: "Jac_Winter/Strap_Hands",
+                label: "Strap_Hands",
+              },
+              {
+                id: "Jac_Winter/Ziplock_Center",
+                label: "Ziplock_Center",
+              },
+            ],
+          },
+        ]
+      }
+      else if (this.season === "Summer" && this.work === "Factory") {
+        this.tree_options = [
+          {
+            id: -1,
+            label: "Выберите элемент...",
+            isDisabled: true
+          },
+          {
+            id: "jackets",
+            label: "Куртки",
+            children: [
+              {
+                id: "Jacket/Jac_Main",
+                label: "Jac_Col",
+              },
+              {
+                id: "Lols",
+                label: "Навесы",
+                children: [
+                  {
+                    id: "Jacket/Jac_Col",
+                    label: "Jac_Col",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_BEHIND_V1",
+                    label: "Jac_COP_BEHIND_V1",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_BEHIND_V2",
+                    label: "Jac_COP_BEHIND_V2",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_FACE",
+                    label: "Jac_COP_FACE",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_Hands",
+                    label: "Jac_COP_Hands",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_Hands_FULL",
+                    label: "Jac_COP_Hands_FULL",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_Hands_LIM",
+                    label: "Jac_COP_Hands_LIM",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_TOP",
+                    label: "Jac_COP_TOP",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_UNDERJac_Back",
+                    label: "Jac_COP_UNDERJac_Back",
+                  },
+                  {
+                    id: "Jacket/Jac_COP_UNDERJac_Face",
+                    label: "Jac_COP_UNDERJac_Face",
+                  },
+                  {
+                    id: "Jacket/Jac_Decor_Back",
+                    label: "Jac_Decor_Back",
+                  },
+                  {
+                    id: "Jacket/Jac_Decor_Pocket_LEFT_V2",
+                    label: "Jac_Decor_Pocket_LEFT_V2",
+                  },
+                  {
+                    id: "Jacket/Jac_Decor_Pocket_RIGHT_V2",
+                    label: "Jac_Decor_Pocket_RIGHT_V2",
+                  },
+                  {
+                    id: "Jacket/Jac_Decor_TOP",
+                    label: "Jac_Decor_TOP",
+                  },
+                  {
+                    id: "Jacket/Jac_Decor_TOP_FACE",
+                    label: "Jac_Decor_TOP_FACE",
+                  },
+                  {
+                    id: "Jacket/Jac_Hands",
+                    label: "Jac_Hands",
+                  },
+                  {
+                    id: "Jacket/Jac_Main",
+                    label: "Jac_Main",
+                  },
+                  {
+                    id: "Jacket/Jac_Planka",
+                    label: "Jac_Planka",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_LEFT_V1",
+                    label: "Jac_Pocket_LEFT_V1",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_LEFT_V1_Dop",
+                    label: "Jac_Pocket_LEFT_V1_Dop",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_LEFT_V2",
+                    label: "Jac_Pocket_LEFT_V2",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_RIGHT_V1",
+                    label: "Jac_Pocket_RIGHT_V1",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_RIGHT_V1_Dop",
+                    label: "Jac_Pocket_RIGHT_V1_Dop",
+                  },
+                  {
+                    id: "Jacket/Jac_Pocket_RIGHT_V2",
+                    label: "Jac_Pocket_RIGHT_V2",
+                  },
+                  {
+                    id: "Jacket/Jac_Rope_Sleeves_V1",
+                    label: "Jac_Rope_Sleeves_V1",
+                  },
+                  {
+                    id: "Jacket/Jac_Rope_Sleeves_V2",
+                    label: "Jac_Rope_Sleeves_V2",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            label: "Штаны",
+            id: "pants",
+            children: [
+              {
+                label:
+                    "Штаны 1",
+                id: "Pants/Pants_Main",
+              },
+              {
+                label:
+                    "Навесы",
+                id: "Keks",
+                children: [
+                  {
+                    id: "Pants/Pants_COP_Knee_Back",
+                    label: "Pants_COP_Knee_Back",
+                  },
+                  {
+                    id: "Pants/Pants_COP_Knee_Face",
+                    label: "Pants_COP_Knee_Face",
+                  },
+                  {
+                    id: "Pants/Pants_COP_UNDERKnee",
+                    label: "Pants_COP_UNDERKnee",
+                  },
+                  {
+                    id: "Pants/Pants_Decor_Pocket_Left_V1",
+                    label: "Pants_Decor_Pocket_Left_V1",
+                  },
+                  {
+                    id: "Pants/Pants_Decor_Pocket_Left_V2",
+                    label: "Pants_Decor_Pocket_Left_V2",
+                  },
+                  {
+                    id: "Pants/Pants_Decor_Pocket_Right_V1",
+                    label: "Pants_Decor_Pocket_Right_V1",
+                  },
+                  {
+                    id: "Pants/Pants_Decor_Pocket_Right_V2",
+                    label: "Pants_Decor_Pocket_Right_V2",
+                  },
+                  {
+                    id: "Pants/Pants_Knee",
+                    label: "Pants_Knee",
+                  },
+                  {
+                    id: "Pants/Pants_Main",
+                    label: "Pants_Main",
+                  },
+                  {
+                    id: "Pants/Pants_Pocket_BEHINDE",
+                    label: "Pants_Pocket_BEHINDE",
+                  },
+                  {
+                    id: "Pants/Pants_Pocket_TOP",
+                    label: "Pants_Pocket_TOP",
+                  },
+                  {
+                    id: "Pants/Pocket_Left_V1",
+                    label: "Pocket_Left_V1",
+                  },
+                  {
+                    id: "Pants/Pocket_Left_V2",
+                    label: "Pocket_Left_V2",
+                  },
+                  {
+                    id: "Pants/Pocket_Right_V1",
+                    label: "Pocket_Right_V1",
+                  },
+                  {
+                    id: "Pants/Pocket_Right_V2",
+                    label: "Pocket_Right_V2",
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      }
+
+      for (let index in this.elements) {
+        console.log(index)
+        this.scene.remove(this.models[this.elements_to_models[index]]);
+        delete this.elements[index];
+        delete this.elements_color[index];
       }
     },
 
@@ -492,7 +937,7 @@ export default defineComponent({
         model = model.target.value;
       }
       let rope_color = this.ropes_color;
-      this.loader.load(`models/${this.sex}/${model}.glb`, (gltf) => {
+      this.loader.load(`models/${this.work}/${this.season}/${this.sex}/${model}.glb`, (gltf) => {
         gltf.scene.position.y = -1;
         gltf.scene.position.z = -0.8;
         gltf.scene.rotation.y = this.rotation_angle;
@@ -604,7 +1049,9 @@ export default defineComponent({
   mounted() {
     this.init();
     this.animate();
-    this.sex_change(this.selected);
+    this.work_change(this.work_selected);
+    this.season_change(this.season_selected);
+    this.sex_change(this.sex_selected);
   }
 })
 </script>
