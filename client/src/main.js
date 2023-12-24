@@ -14,19 +14,23 @@ import LoadModel from "./admin/LoadModel.vue";
 const router = createRouter({
     routes: [
         {
-            path: '/',
+            path: "/",
+            name: "Конструктор",
             component: Constructor
         },
         {
-            path: '/login',
+            path: "/login",
+            name: "Ленсиз",
             component: Login
         },
         {
-            path: '/registration',
+            path: "/registration",
+            name: "Ленсиз",
             component: Registration,
         },
         {
-            path: '/admin/load_model',
+            path: "/admin/load_model",
+            name: "Загрузка модели",
             component: LoadModel,
             meta: {
                 requiresAuth: false
@@ -34,6 +38,7 @@ const router = createRouter({
         },
         {
             path: '/admin/new_applications',
+            name: "Заявки",
             component: NewApplication,
             meta: {
                 requiresAuth: false
@@ -42,6 +47,7 @@ const router = createRouter({
         {
             path: '/admin/model_editor',
             component: ModelEditor,
+            name: "Редактирование модели",
             meta: {
                 requiresAuth: false
             }
@@ -51,6 +57,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    document.title = to.name;
     if (to.meta.requiresAuth) {
         const token = localStorage.getItem('token');
         if (token) {

@@ -1,60 +1,11 @@
 <template>
-  <header style="font-family: Ubuntu,serif;">
-    <img src="@/assets/logo.png" id="logo" alt=""/>
-    <div class="header_core">
-      <a href="/constructor" class="header_link">Конструктор</a>
-      <a href="/projects" class="header_link">Мои проекты</a>
-      <a href="/orders" class="header_link">Мои заказы</a>
-      <a href="/chat" class="header_link">Чат с производителем</a>
-      <a href="/faq" class="header_link">FAQ</a>
-    </div>
-    <div style="display: table; float: right; padding-right: 5vw">
-      <div style="display: table-cell;">
-        <a style="display: table-row">
-          Phone number 1
-        </a>
-        <a style="display: table-row">
-          Phone number 2
-        </a>
-        <a style="display: table-row">
-          info@lensiz.ru
-        </a>
-      </div>
-      <div style="display: table-cell; padding-left: 1vw; text-align: center; vertical-align: middle">
-        <button class="btn btn-danger" style="height: 2.5vw; background-color: #cb292f">
-          Заказать звонок
-        </button>
-      </div>
-    </div>
-  </header>
+  <HeaderComponent/>
 
-  <hr style="width: 92vw; margin-left: 4vw; margin-top: 0">
   <h1 class="display-1" style="text-align: center; font-size: 46px; font-family: Ubuntu,serif; color: #24509c">
     Конструктор спецодежды</h1>
   <br>
   <div id="wrapper" style="font-family: Ubuntu,serif">
-    <div id="menu">
-      <ul class="list-group list-group-flush">
-        <li class="menu_button list-group-item" style="border-radius: 10px">
-          <a href="/constructor" class="menu_text">Конструктор</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/projects" class="menu_text">Мои проекты</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/orders" class="menu_text">Мои заказы</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/chat" class="menu_text">Чат с производителем</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/offer" class="menu_text">Оферта</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/instruction_text" class="menu_text">Инструкция (текстовая)</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/instruction_video" class="menu_text">Видео-инструкция</a></li>
-        <li class="menu_button list-group-item">
-          <a href="/edit" class="menu_text">Управление профилем</a></li>
-        <li class="menu_button list-group-item" style="border-radius: 10px">
-          <a href="/faq" class="menu_text">FAQ</a></li>
-      </ul>
-    </div>
+    <MenuComponent/>
     <div id="viewer" @mousemove="mouseMove" @mousedown.left="mouseDownLeft" @mouseup.left="mouseUpLeft"
          @mousewheel='mouseWheel' oncontextmenu="return false;"
          @mousedown.right="mouseDownRight" @mouseup.right="mouseUpRight">
@@ -121,9 +72,7 @@
       </button>
     </div>
   </div>
-  <div id="footer">
-    © Компания ООО "ЛенСИЗ", 2019.
-  </div>
+  <FooterComponent/>
 </template>
 
 <script>
@@ -135,12 +84,16 @@ import {GLTFLoader} from "three/addons/loaders/GLTFLoader";
 import {ColorPicker} from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 
+import HeaderComponent from "@/HeaderComponent";
+import MenuComponent from "@/MenuComponent";
+import FooterComponent from "@/FooterComponent";
+
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 
 export default defineComponent({
   name: 'App',
-  components: {ColorPicker, CCloseButton, Treeselect},
+  components: {ColorPicker, CCloseButton, Treeselect, HeaderComponent, MenuComponent, FooterComponent},
 
   data() {
     return {
