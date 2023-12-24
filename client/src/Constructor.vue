@@ -54,7 +54,7 @@
           <color-picker style="width: 10%" v-model:pureColor="elements_color[index]"
                         @pureColorChange="change_color($event, index)"
                         :disableAlpha="true" class="inline-element"/>
-          <treeselect style="width: 80%" class="inline-element"
+          <treeselect style="width: 80%" class="inline-element" autocomplete="false"
                       v-model="elements[index]" :close-on-select="false" :clearable="false"
                       :options="tree_options" placeholder="Выберите элемент..." :disable-branch-nodes="true"/>
           <CCloseButton style="width: 10%" @click="deleteRow(index)" class="inline-element"/>
@@ -72,7 +72,9 @@
       </button>
     </div>
   </div>
-  <FooterComponent/>
+  <div>
+    <FooterComponent/>
+  </div>
 </template>
 
 <script>

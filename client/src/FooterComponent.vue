@@ -1,5 +1,4 @@
 <template>
-
   <footer>
     <div class="container">
       <div class="d-flex w-100">
@@ -82,8 +81,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 footer {
+  /*position: relative;*/
+  /*left: 0;*/
+  /*bottom: 0;*/
+  /*width: 100%;*/
   background: #062051;
   color: #fafaff;
   padding-top: 20px;
