@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Request, HTTPException
 from ..schemas.customer import RestCustomerRegister, RestCustomerLogin
-from backend.src.database.database import DatabaseService
-from backend.src.services.utils.jwt_processing import Auth
+from ...database.database import DatabaseService
+from ...services.utils.jwt_processing import Auth
 
 customer_router = APIRouter(
     tags=["customer"],

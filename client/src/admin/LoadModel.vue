@@ -65,10 +65,6 @@ export default {
       formData.append("description", this.description || "");
       formData.append("path_to_model", this.path_to_model || "");
 
-      for (var key of formData.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
-
 
       axios.post("http://127.0.0.1:3000/api/admin/load_model", formData, {
             headers: {

@@ -1,40 +1,26 @@
-version: '3.9'
-
+version: '3.1'
 services:
-  backend:
-    image: siailyadev/moretech5-backend:0.0.1
-    container_name: "backend"
-    env_file:
-      - stack.env
-    ports:
-      - '5000:5000'
-
-  frontend:
-    image: siailyadev/moretech5-frontend:0.0.1
-    container_name: 'frontend'
-    ports:
-      - '3000:80'
-
-  queue:
-    image: philipoff/moretech5-queue:0.0.1
-    container_name: 'queue'
-
   mongo:
     image: mongo
     container_name: "mongo"
     restart: always
-    env_file:
-      - stack.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: filipp
+      MONGO_INITDB_ROOT_PASSWORD: creator_of_the_world_1232122
     volumes:
-      - mongo:/data/db
+      - './dockervolume/mongodb:/data/db'
     ports:
-      - '27017:27017'
+      - 27017:27017
 
-
-volumes:
-  mongo:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /var/local/mongo
+  backend:
+    image: philipoff/lensiz_backend:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    healthcheck:
+      test: curl -sS http://127.0.0.1:3000/api/health || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 12

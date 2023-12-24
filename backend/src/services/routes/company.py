@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Request, HTTPException
-from ..schemas.company import RestCompanyLogin, RestCompanyRegister
-from backend.src.database.database import DatabaseService
-from backend.src.services.utils.jwt_processing import Auth
+from ...services.schemas.company import RestCompanyLogin, RestCompanyRegister
+from ...database.database import DatabaseService
+from ...services.utils.jwt_processing import Auth
 
 company_router = APIRouter(
     tags=["company"],

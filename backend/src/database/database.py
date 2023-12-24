@@ -38,6 +38,7 @@ class DatabaseService:
         self.companies_collection.insert_one({
             "_id": self.companies_collection.count_documents({}),
             "email": email,
+            "role": "company",
             "hashed_password": hashed_password,
             "TIN": TIN,
             "name": name,
@@ -60,6 +61,7 @@ class DatabaseService:
         self.customers_collection.insert_one({
             "_id": self.customers_collection.count_documents({}),
             "email": email,
+            "role": "customer",
             "hashed_password": hashed_password,
             "TIN": TIN,
             "name": name,
@@ -75,3 +77,21 @@ class DatabaseService:
 
     async def get_customer(self, email: EmailStr):
         return self.customers_collection.find_one({"email": email}, {"_id": False})
+
+    async def get_registration_applications(self):
+        return {
+            "customers": list(self.customers_collection.find({"status": "Need to approve"}, {"_id": False})),
+            "companies": list(self.companies_collection.find({"status": "Need to approve"}, {"_id": False}))
+        }
+
+    async def approve_customer(self, id):
+        return self.customers_collection.update_one({"_id": id}, {"$set": {"status": "Approved"}})
+
+    async def decline_customer(self, id):
+        return self.customers_collection.update_one({"_id": id}, {"$set": {"status": "Decline"}})
+
+    async def approve_company(self, id):
+        return self.companies_collection.update_one({"_id": id}, {"$set": {"status": "Approved"}})
+
+    async def decline_company(self, id):
+        return self.companies_collection.update_one({"_id": id}, {"$set": {"status": "Decline"}})
