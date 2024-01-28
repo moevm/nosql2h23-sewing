@@ -9,31 +9,25 @@ common_router = APIRouter(
 )
 
 
-@common_router.post(
-    path="/registration_applications",
-    status_code=status.HTTP_200_OK,
-    responses={400: {}, 401: {}, 403: {}},
-)
-async def registration_applications(request: Request, data: RestCustomerRegister):
+@common_router.post("/login")
+async def login(request: Request, data: RestCustomerLogin):
     database: DatabaseService = request.app.state.database
-    user = await database.get_customer(email=data.email)
-
-    if user is not None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already exist",
-        )
-
-    user = await database.register_customer(
-        email=data.email,
-        password=data.password,
-        TIN=data.TIN,
-        name=data.name,
-        contact_person=data.contact_person,
-        phone=data.phone,
-    )
 
     auth = Auth()
-    access_token = auth.create_token(user["email"])
-    refresh_token = auth.create_refresh_token(user["email"])
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    user = await database.get_user(email=data.email)
+
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Неверный e-mail!')
+    if not auth.verify_password(data.password, user["hashed_password"]):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Неверный пароль')
+    if user["status"] == "Need to approve":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='Пожалуйста, дождитесь, пока с Вами свяжется менеджер.')
+    if user["status"] == "Declined":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='К сожалению, ваша заявка была отклонена.')
+
+    access_token = auth.create_token(data.email, user["role"])
+    refresh_token = auth.create_refresh_token(data.email, user["role"])
+
+    return {"access_token": access_token, "refresh_token": refresh_token, "role": user["role"]}

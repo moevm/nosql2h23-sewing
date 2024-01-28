@@ -13,3 +13,7 @@ class RestCompanyRegister(BaseModel):
 class RestCompanyLogin(BaseModel):
     email: EmailStr = Field(description="Login e-mail")
     password: constr(min_length=1, max_length=256) = Field(description="Login password")
+
+
+class RestCompanyToken(BaseModel):
+    token: constr(min_length=1, max_length=512) = Field(description="Access token")

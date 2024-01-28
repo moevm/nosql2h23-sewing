@@ -4,57 +4,63 @@
       <div class="card">
         <form>
           <div class="container">
-            <img src="@/assets/logo.png" id="logo"/>
+            <img src="@/assets/logo.png" id="logo" alt="logo"/>
             <div style="font-size: 12px">
               <div class="form-group">
-                <label for="login"><b>Логин/Email</b></label>
+                <label for="login"><b>Email</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите логин" name="login"
-                       id="login" ref="login" required>
+                       id="login" v-model="login" required>
               </div>
 
               <div class="form-group">
                 <label for="psw"><b>Пароль</b></label>
                 <input style="font-size: 12px" class="form-control" type="password" placeholder="Введите пароль"
-                       name="psw" id="psw" ref="psw" required>
+                       name="psw" id="psw" v-model="password" required>
               </div>
 
               <div class="form-group">
                 <label for="inn"><b>ИНН</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите ИНН" name="inn"
-                       id="inn" ref="inn" required>
+                       id="inn" v-model="TIN" required>
               </div>
 
               <div class="form-group">
                 <label for="company-name"><b>Наименование компании</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите имя компании"
                        name="company-name"
-                       id="company-name" ref="companyName" required>
+                       id="company-name" v-model="companyName" required>
               </div>
 
               <div class="form-group">
                 <label for="contact"><b>Контактное лицо (ФИО - должность)</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="Введите контактное лицо"
                        name="contact"
-                       id="contact" ref="contact" required>
+                       id="contact" v-model="contact_person" required>
               </div>
 
               <div class="form-group">
                 <label for="phone"><b>Телефон для связи</b></label>
                 <input style="font-size: 12px" class="form-control" type="text" placeholder="+7 (XXX)-XXX-XXXX"
                        name="phone"
-                       id="phone" ref="phone" required>
+                       id="phone" v-model="phone" required>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" style="padding-bottom: 1.5vh">
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" ref="customerRadio" checked>Покупатель
+                  <input type="radio" style="vertical-align: middle" value="customer" v-model="pickedRadio"  checked>
+                  <label style="padding-left: 5px; vertical-align: middle">
+                    Покупатель
+                  </label>
                 </label>
-                <label class="radio-inline" style="margin-left: 10px; margin-bottom: 6px;">
-                  <input type="radio" name="optradio" ref="companyRadio">Поставщик
+                <label class="radio-inline" style="margin-left: 20px; margin-bottom: 6px;">
+                  <input type="radio" style="vertical-align: middle" value="company" v-model="pickedRadio">
+                  <label style="padding-left: 5px; vertical-align: middle">
+                    Поставщик
+                  </label>
                 </label>
               </div>
             </div>
-            <button type="submit" class="registerbtn" ref="submit">Регистрация</button>
+            <button @click.prevent="onSubmit" class="register_button" ref="submit">Регистрация</button>
           </div>
         </form>
       </div>
@@ -63,49 +69,55 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "RegistrationPage",
-  methods: {
-    checkForm() {
-      return this.$refs.login.value !== "" && this.$refs.psw.value !== "" && this.$refs.inn.value !== "" &&
-          this.$refs.companyName.value !== "" && this.$refs.contact.value !== "" && this.$refs.phone.value !== ""
+
+  data() {
+    return {
+      login: '',
+      password: '',
+      TIN: '',
+      companyName: '',
+      contact_person: '',
+      phone: '',
+      pickedRadio: "customer",
     }
   },
-  mounted() {
-    this.$refs.submit.addEventListener('click', () => {
-      if (this.checkForm()) {
-        let url = ""
-        if (this.$refs.customerRadio.checked) {
-          url = 'http://127.0.0.1:3000/api/customer/register'
-        } else {
-          url = 'http://127.0.0.1:3000/api/company/register'
-        }
 
-        fetch(url, {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                "email": String(this.$refs.login.value),
-                "password": String(this.$refs.psw.value),
-                "TIN": String(this.$refs.inn.value),
-                "name": String(this.$refs.companyName.value),
-                "contact_person": String(this.$refs.contact.value),
-                "phone": String(this.$refs.phone.value)
-              })
+  methods: {
+    onSubmit() {
+      let register_url = "/api/" + this.pickedRadio + "/register"
+
+      axios.post(register_url, {
+            "email": String(this.login),
+            "password": String(this.password),
+            "TIN": String(this.TIN),
+            "name": String(this.companyName),
+            "contact_person": String(this.contact_person),
+            "phone": String(this.phone),
+          }, {
+            headers: {
+              'Accept':
+                  'application/json',
+              'Content-Type':
+                  'application/json'
             }
-        )
-        window.location.href = "/login"
-      }
-    })
+          }
+      ).then((response) => {
+        if (response.status === 201) {
+          window.location.href = "/wait_page"
+        }
+      }).catch((reason) => alert(reason.response.data.detail))
+    }
   }
 }
 </script>
 
 <style scoped>
 section {
+  font-family: Ubuntu;
   background-color: #e8e8e8;
   height: 100vh;
   display: flex;
@@ -140,7 +152,7 @@ input[type=text]:focus, input[type=password]:focus {
   outline: none;
 }
 
-.registerbtn {
+.register_button {
   height: 30px;
   width: 100%;
   background-color: #4CAF50;
@@ -148,9 +160,10 @@ input[type=text]:focus, input[type=password]:focus {
   border: none;
   cursor: pointer;
   opacity: 0.9;
+  padding-bottom: 4px;
 }
 
-.registerbtn:hover {
+.register_button:hover {
   opacity: 1;
 }
 

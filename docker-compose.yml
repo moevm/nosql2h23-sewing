@@ -5,22 +5,9 @@ services:
     container_name: "mongo"
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: filipp
-      MONGO_INITDB_ROOT_PASSWORD: creator_of_the_world_1232122
+      MONGO_INITDB_ROOT_USERNAME: lensiz
+      MONGO_INITDB_ROOT_PASSWORD: KVvI6xGIVoL6v4xb
     volumes:
       - './dockervolume/mongodb:/data/db'
     ports:
       - 27017:27017
-
-  backend:
-    image: philipoff/lensiz_backend:latest
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-    healthcheck:
-      test: curl -sS http://127.0.0.1:3000/api/health || echo 1
-      interval: 30s
-      timeout: 3s
-      retries: 12

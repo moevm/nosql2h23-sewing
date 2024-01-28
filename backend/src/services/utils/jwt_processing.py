@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 
 class Auth:
     hasher = CryptContext(schemes=['bcrypt'])
-    secret = "sewing_ETU_FoazUy113Zhfs51"
+    secret = "secret_key"
 
     def hash_password(self, password):
         return self.hasher.hash(password)
@@ -15,12 +15,13 @@ class Auth:
     def verify_password(self, password, hash_password):
         return self.hasher.verify(password, hash_password)
 
-    def create_token(self, username):
+    def create_token(self, username, role):
         payload = {
             "iat": datetime.utcnow(),
             "exp": datetime.utcnow() + timedelta(days=7),
             "scope": "access_token",
-            "sub": username
+            "sub": username,
+            "role": role,
         }
         return jwt.encode(
             payload,
@@ -32,19 +33,20 @@ class Auth:
         try:
             payload = jwt.decode(token, self.secret, algorithms=['HS256'])
             if payload["scope"] == "access_token":
-                return payload["sub"]
+                return {"email": payload["sub"], "role": payload["role"]}
             raise HTTPException(status_code=401, detail="Invalid scope for token")
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token expired")
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=401, detail="Invalid token")
 
-    def create_refresh_token(self, username):
+    def create_refresh_token(self, username, role):
         payload = {
             "iat": datetime.utcnow(),
             "exp": datetime.utcnow() + timedelta(days=7),
             "scope": "refresh_token",
-            "sub": username
+            "sub": username,
+            "role": role,
         }
         return jwt.encode(
             payload,
@@ -57,7 +59,8 @@ class Auth:
             payload = jwt.decode(refresh_token, self.secret, algorithms=['HS256'])
             if payload["scope"] == "refresh_token":
                 username = payload["sub"]
-                new_token = self.create_token(username)
+                role = payload["role"]
+                new_token = self.create_token(username, role)
                 return new_token
             raise HTTPException(status_code=401, detail="Invalid scope for token")
         except jwt.ExpiredSignatureError:
@@ -68,13 +71,13 @@ class Auth:
 
 if __name__ == "__main__":
     auth = Auth()
-    test_hash = auth.hash_password("12345")
-    is_correct = auth.verify_password("12345", test_hash)
+    test_hash = auth.hash_password("1234")
+    is_correct = auth.verify_password("1234", test_hash)
     print(is_correct)
     print(test_hash)
 
     payload = {'role': "admin"}
-    token = auth.create_token(payload)
+    token = auth.create_token(username="admin", role="admin")
     print(token)
     decoded_payload = auth.decode_token(token)
     print(decoded_payload)

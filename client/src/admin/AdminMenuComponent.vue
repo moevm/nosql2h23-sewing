@@ -4,23 +4,27 @@
       <li class="menu_button list-group-item" style="border-radius: 10px">
         <a href="/admin/new_applications" class="menu_text">Новые регистрации</a></li>
       <li class="menu_button list-group-item">
-        <a href="/admin/clients" class="menu_text">Покупатели</a></li>
+        <a href="/admin/customers" class="menu_text">Покупатели</a></li>
       <li class="menu_button list-group-item">
-        <a href="/admin/providers" class="menu_text">Поставщики</a></li>
+        <a href="/admin/companies" class="menu_text">Поставщики</a></li>
       <li class="menu_button list-group-item">
         <a href="admin/clients/chat" class="menu_text">Чат с покупателями</a></li>
       <li class="menu_button list-group-item">
         <a href="admin/providers/chat" class="menu_text">Чат с поставщиками</a></li>
       <li class="menu_button list-group-item">
-        <a href="/admin/constructor_edit" class="menu_text">Управление конструктором</a></li>
+        <a href="/admin/models" class="menu_text">Список моделей</a></li>
       <li class="menu_button list-group-item">
-        <a href="/admin/offer_edit" class="menu_text">Редактирвоание оферты</a></li>
+        <a href="/admin/constructor_settings" class="menu_text">Управление конструктором</a></li>
+      <li class="menu_button list-group-item">
+        <a href="/admin/offer_edit" class="menu_text">Редактирование оферты</a></li>
       <li class="menu_button list-group-item">
         <a href="/admin/text_instruction" class="menu_text">Инструкция (текстовая)</a></li>
       <li class="menu_button list-group-item">
         <a href="/admin/video_instruction" class="menu_text">Видео-инструкция</a></li>
       <li class="menu_button list-group-item" style="border-radius: 10px">
         <a href="/admin/profile_management" class="menu_text">Управление профилем</a></li>
+      <li class="menu_button list-group-item" style="border-radius: 10px">
+        <a href="/admin/create_manager" class="menu_text">Добавить менеджера</a></li>
     </ul>
   </div>
 </template>
@@ -33,6 +37,7 @@ export default {
 
 <style scoped>
 #menu {
+  font-family: Ubuntu;
   display: table-cell;
   float: left;
   width: 20%;

@@ -8,28 +8,28 @@
               <img src="@/assets/white_logo.png" id="white-icon">
             </tr>
             <tr>
-              <p style="font-size: 12px; color: #2e508c;">ООО "ЛенСИЗ", 2022.
+              <p style="font-size: 16px; color: #2e508c;">ООО "ЛенСИЗ", 2022.
               <br>Все права защищены</p>
             </tr>
             <tr>
-              <button class="btn btn-danger" style="height: 2vw; width: 12vw; background-color: #cb292f; padding-top: 0; font-size: 12px">
+              <button class="btn btn-danger" style="height: 1.8vw; width: 11vw; background-color: #cb292f; padding-top: 2px; font-size: 13px">
                 В Интернет-магазин
               </button>
             </tr>
           </table>
         </div>
-        <div style="font-size: 16px; padding-left: 50px">
+        <div style="font-size: 20px; margin-top: 10px; margin-left: 4vw;">
           Навигация по сайту
           <div>
             <table class="navigation">
-              <tr><td><a>О компании</a></td><td><a>Наши клиенты</a></td></tr>
-              <tr><td><a>Продукция</a></td><td><a>Отзывы</a></td></tr>
-              <tr><td><a>Этапы работы</a></td><td><a>Вопросы и ответы</a></td></tr>
-              <tr><td><a>Производство</a></td><td><a>Интернет магазин</a></td></tr>
+              <tr><td style="padding-right: 50px"><a>О компании</a></td><td><a>Наши клиенты</a></td></tr>
+              <tr><td style="padding-right: 50px"><a>Продукция</a></td><td><a>Отзывы</a></td></tr>
+              <tr><td style="padding-right: 50px"><a>Этапы работы</a></td><td><a>Вопросы и ответы</a></td></tr>
+              <tr><td style="padding-right: 50px"><a>Производство</a></td><td><a>Интернет магазин</a></td></tr>
             </table>
           </div>
         </div>
-        <div class="ms-auto" style="display: flex; align-items: center;">
+        <div class="ms-auto" style="display: flex;">
           <div>
             <div id="contacts">
               <table>
@@ -83,14 +83,12 @@ export default {
 
 <style>
 footer {
-  /*position: relative;*/
-  /*left: 0;*/
-  /*bottom: 0;*/
-  /*width: 100%;*/
+  bottom: 0;
   background: #062051;
   color: #fafaff;
   padding-top: 20px;
   padding-bottom: 20px;
+  margin-top: 20px;
   font-family: Ubuntu;
 }
 
@@ -109,8 +107,7 @@ a:hover {
 }
 
 #contacts {
-  font-size: 12px;
-
+  font-size: 16px;
 }
 
 table {
@@ -124,16 +121,15 @@ table {
 
 #white-icon {
   width: 150px;
-  padding-bottom: 10px;
+  padding-bottom: 30px;
 }
 
 .navigation {
-  font-size: 12px;
+  font-size: 16px;
   color: #2e508c;
 }
 
 table.navigation td {
-  padding-right: 50px;
   padding-left: 0;
   text-align: left;
 }
