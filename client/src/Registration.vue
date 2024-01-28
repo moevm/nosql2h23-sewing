@@ -16,7 +16,7 @@
                 <label for="psw"><b>Пароль</b></label>
                 <input style="font-size: 12px" class="form-control" type="password" placeholder="Введите пароль"
                        name="psw" id="psw" v-model="password" required>
-              </div>
+              </div>  
 
               <div class="form-group">
                 <label for="inn"><b>ИНН</b></label>
